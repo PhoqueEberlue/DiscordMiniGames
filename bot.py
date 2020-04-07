@@ -9,6 +9,22 @@ bot = commands.Bot(command_prefix='$')
 async def on_ready():
     print('bot is ready')
 
+@bot.event
+async def on_guild_join(guild):
+    await guild.create_role(name="Bomb Party Admin")
+    await guild.create_role(name="BP Current Player")
+    await guild.invoke(createChannel)
+
+@bot.event
+async def on_guild_remove(guild):
+    pass
+
+################### SETUP RELATED ###################
+# @bot.command()
+# async def quickSetup(ctx: commands.Context):
+#     await ctx.invoke(createChannel)
+################### SETUP RELATED ###################
+
 ################### SETTINGS RELATED ###################
 Languages = ["fr", "en"]
 
@@ -17,7 +33,7 @@ def getSettings(GuildId):
     try:
         with open(file_name, "r", encoding="utf-8") as read_file:
             settings = json.load(read_file)
-    except:
+    except FileNotFoundError:
         with open('./settings/DefaultSettings.json', "r", encoding="utf-8") as read_file:
             settings = json.load(read_file)
     return settings
@@ -59,7 +75,7 @@ def getMaxChannel(channels):
     i = 0
     done = True
     while(done):
-        channel = f'discord-bomb-party-{i}'
+        channel = f'bomb-party-{i}'
         if channel in channels:
             i += 1
         else:
@@ -79,9 +95,9 @@ async def createChannel(ctx: commands.Context, arg=1):
         channels = getChannelNamesList(ctx.guild)
         i = getMaxChannel(channels)
         for _ in range(arg):
-            await ctx.guild.create_text_channel(f'discord-bomb-party-{i}')
+            await ctx.guild.create_text_channel(f'bomb-party-{i}')
             i += 1
-        await ctx.send(f'{arg} channels have been created.')
+        await ctx.send(f'{arg} channel(s) have been created.')
     else:
         await ctx.send('You can\'t create more than 50 or less than 1 channels at once')
 
@@ -93,17 +109,23 @@ async def deleteChannel(ctx: commands.Context, arg=1):
         i = getMaxChannel(channels) - 1
         for _ in range(arg):
             for channel in ctx.guild.text_channels:
-                if f'discord-bomb-party-{i}' == channel.name:
+                if f'bomb-party-{i}' == channel.name:
                     await channel.delete()
                     i -= 1
                     break  
-        await ctx.send(f'{arg} channels have been deleted.')
+        await ctx.send(f'{arg} channel(s) have been deleted.')
     else:
         await ctx.send('You can\'t delete more than 50 or less than 1 channels at once')
 ################### END OF CHANNELS RELATED ####################
 
 ################### ROLES RELATED ####################
-
+@bot.command()
+async def createRole(ctx: commands.Context):
+    await ctx.guild.create_role(name="Bomb Party Admin")
+    await ctx.guild.create_role(name="BP Current Player")
 ################### END OF ROLES RELATED ####################
 
+
+
+#discord.on_reaction_add(reaction, user)
 bot.run(getToken())
