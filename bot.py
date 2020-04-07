@@ -1,6 +1,7 @@
 import discord
 import json
 import time
+from random import randint
 from discord.ext import commands
 from tokenConfig import getToken
 
@@ -16,9 +17,6 @@ async def on_guild_join(guild):
     await guild.create_role(name="BP Current Player")
     await guild.invoke(createChannel)
 
-@bot.event
-async def on_guild_remove(guild):
-    pass
 
 ################ CONSTANT POULE ####################
 ChannelPrefix = 'bomb-party-'
@@ -135,30 +133,34 @@ async def party(ctx: commands.Context):
     if ctx.channel.name[:-1] != ChannelPrefix:
         await ctx.send("You can't call this command outside a bomb-party channel!")
     else:
-        await ctx.send("Party created, click on the reaction above to join!")
+        await ctx.send("Party created, click on the reaction bellow to join!")
         partyMessage = ctx.channel.last_message
         await partyMessage.add_reaction("✅")
-        time.sleep(2)
-        i = 0
-        players = []
-        while(i<15 and len(players)<10):
-            time.sleep(1)
-            reac = partyMessage.reactions[0]
-            players = []
-            async for user in reac.users():
-                if user != bot.user:
-                    players.append(user)
-            i += 1
-            if i == 13:
-                await ctx.send('3️⃣')
-            elif i == 14:
-                await ctx.send('2️⃣')
-            elif i == 15:
-                await ctx.send('1️⃣')
-        
 
-    
-################### END OF PARTY RELATED ####################
+@bot.command()
+async def play(ctx: commands.Context):
+    counter = 0
+    reac = None
+    players = []
+    async for message in ctx.channel.history(limit=100):
+        if message.author == bot.user:
+            reac = message.reactions[0]
+            break
+    async for user in reac.users():
+        if user != bot.user:
+            players.append(user)
+    for player in players:
+        player.add_roles()
+    end = False
+    Index = randint(0, len(players)-1)
+    CurrentPlayer = players[Index]
+    while(not end):
+        CurrentPlayer.add_role()
+        while():
+
+
+        
+################## END OF PARTY RELATED ####################
 
 #discord.on_reaction_add(reaction, user)
 bot.run(getToken())
