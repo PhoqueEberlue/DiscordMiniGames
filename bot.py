@@ -1,7 +1,7 @@
 import discord
 import json
 from discord.ext import commands
-from token import token
+from tokenConfig import getToken
 
 bot = commands.Bot(command_prefix='$')
 
@@ -106,4 +106,4 @@ async def deleteChannel(ctx: commands.Context, arg=1):
 
 ################### END OF ROLES RELATED ####################
 
-bot.run(token())
+bot.run(getToken())
