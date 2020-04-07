@@ -1,5 +1,6 @@
 import discord
 import json
+import time
 from discord.ext import commands
 from tokenConfig import getToken
 
@@ -19,6 +20,11 @@ async def on_guild_join(guild):
 async def on_guild_remove(guild):
     pass
 
+################ CONSTANT POULE ####################
+ChannelPrefix = 'bomb-party-'
+Languages = ["fr", "en"]
+################ END OF CONSTANT POULE ####################
+
 ################### SETUP RELATED ###################
 # @bot.command()
 # async def quickSetup(ctx: commands.Context):
@@ -26,8 +32,6 @@ async def on_guild_remove(guild):
 ################### SETUP RELATED ###################
 
 ################### SETTINGS RELATED ###################
-Languages = ["fr", "en"]
-
 def getSettings(GuildId):
     file_name = './settings/' + str(GuildId) + '.json'
     try:
@@ -75,7 +79,7 @@ def getMaxChannel(channels):
     i = 0
     done = True
     while(done):
-        channel = f'bomb-party-{i}'
+        channel = ChannelPrefix + str(i)
         if channel in channels:
             i += 1
         else:
@@ -95,7 +99,7 @@ async def createChannel(ctx: commands.Context, arg=1):
         channels = getChannelNamesList(ctx.guild)
         i = getMaxChannel(channels)
         for _ in range(arg):
-            await ctx.guild.create_text_channel(f'bomb-party-{i}')
+            await ctx.guild.create_text_channel(ChannelPrefix + str(i))
             i += 1
         await ctx.send(f'{arg} channel(s) have been created.')
     else:
@@ -109,7 +113,7 @@ async def deleteChannel(ctx: commands.Context, arg=1):
         i = getMaxChannel(channels) - 1
         for _ in range(arg):
             for channel in ctx.guild.text_channels:
-                if f'bomb-party-{i}' == channel.name:
+                if ChannelPrefix + str(i) == channel.name:
                     await channel.delete()
                     i -= 1
                     break  
@@ -120,12 +124,41 @@ async def deleteChannel(ctx: commands.Context, arg=1):
 
 ################### ROLES RELATED ####################
 @bot.command()
-async def createRole(ctx: commands.Context):
+async def createRoles(ctx: commands.Context):
     await ctx.guild.create_role(name="Bomb Party Admin")
     await ctx.guild.create_role(name="BP Current Player")
 ################### END OF ROLES RELATED ####################
 
+################### PARTY RELATED ####################
+@bot.command()
+async def party(ctx: commands.Context):
+    if ctx.channel.name[:-1] != ChannelPrefix:
+        await ctx.send("You can't call this command outside a bomb-party channel!")
+    else:
+        await ctx.send("Party created, click on the reaction above to join!")
+        partyMessage = ctx.channel.last_message
+        await partyMessage.add_reaction("✅")
+        time.sleep(2)
+        i = 0
+        players = []
+        while(i<15 and len(players)<10):
+            time.sleep(1)
+            reac = partyMessage.reactions[0]
+            players = []
+            async for user in reac.users():
+                if user != bot.user:
+                    players.append(user)
+            i += 1
+            if i == 13:
+                await ctx.send('3️⃣')
+            elif i == 14:
+                await ctx.send('2️⃣')
+            elif i == 15:
+                await ctx.send('1️⃣')
+        
 
+    
+################### END OF PARTY RELATED ####################
 
 #discord.on_reaction_add(reaction, user)
 bot.run(getToken())
