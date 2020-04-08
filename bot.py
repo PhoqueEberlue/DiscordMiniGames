@@ -24,7 +24,7 @@ ChannelPrefix = 'bomb-party-'
 Languages = ["fr", "en"]
 with open('Dictionnaries.json', "r", encoding="utf-8") as read_file:
     Dictionnaries = json.load(read_file)
-print(Dictionnaries['fr']['letters'])
+print(Dictionnaries)
 ################ END OF CONSTANT POULE ####################
 
 ################### SETUP RELATED ###################
