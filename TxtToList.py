@@ -1,0 +1,34 @@
+import json
+
+F = open("liste_francais.txt", "r")
+wordList = F.read().split("\n")
+loweredList = []
+for word in wordList:
+    loweredList.append(word.lower())
+recurence = {}
+for word in loweredList:
+    for i in range(len(word)):
+        if i < len(word)-1:
+            letters = str(word[i] + word[i+1])
+            if letters in recurence.keys():
+                recurence[letters] += 1
+            else:
+                recurence[letters] = 1
+delList = []
+for letters, number in recurence.items():
+    if number < 15:
+        delList.append(letters)
+for letters in delList:        
+    del recurence[letters]
+print(recurence)
+lettersList = []
+for letters in recurence.keys():
+    lettersList.append(letters)
+print(lettersList)
+with open('Dictionnaries.json', "r", encoding="utf-8") as read_file:
+    Dictionnaries = json.load(read_file)
+    Dictionnaries["fr"]["words"] = loweredList
+    Dictionnaries["fr"]["letters"] = lettersList
+with open('Dictionnaries.json', "w", encoding="utf-8") as write_file:
+    json.dump(Dictionnaries, write_file)
+print(Dictionnaries)

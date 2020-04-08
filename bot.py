@@ -1,9 +1,10 @@
 import discord
 import json
 import time
-from random import randint
 from discord.ext import commands
 from tokenConfig import getToken
+import random
+from random import randint
 
 bot = commands.Bot(command_prefix='$')
 
@@ -21,6 +22,9 @@ async def on_guild_join(guild):
 ################ CONSTANT POULE ####################
 ChannelPrefix = 'bomb-party-'
 Languages = ["fr", "en"]
+with open('Dictionnaries.json', "r", encoding="utf-8") as read_file:
+    Dictionnaries = json.load(read_file)
+print(Dictionnaries['fr']['letters'])
 ################ END OF CONSTANT POULE ####################
 
 ################### SETUP RELATED ###################
@@ -139,9 +143,15 @@ async def party(ctx: commands.Context):
 
 @bot.command()
 async def play(ctx: commands.Context):
-    counter = 0
+    winner = None
+    channel = ctx.channel
+    settings = getSettings(ctx.guild.id)
+    lang = settings["Language"]
+    minTiming = settings["MinimumTiming"]
+    timeLeft = 15
     reac = None
     players = []
+    unavailableWords = {}
     async for message in ctx.channel.history(limit=100):
         if message.author == bot.user:
             reac = message.reactions[0]
@@ -149,17 +159,39 @@ async def play(ctx: commands.Context):
     async for user in reac.users():
         if user != bot.user:
             players.append(user)
-    for player in players:
-        player.add_roles()
+    # for player in players:
+    #     player.add_roles()
     end = False
     Index = randint(0, len(players)-1)
-    CurrentPlayer = players[Index]
     while(not end):
-        CurrentPlayer.add_role()
-        while():
+        survive = False
+        CurrentPlayer = players[Index]
+        #CurrentPlayer.add_role()
+        start = time.time()
+        letters = random.choice(Dictionnaries[lang]["letters"])
+        await ctx.send(f'@{CurrentPlayer.name},type a word that contains: {letters}')
+        if timeLeft < minTiming:
+            timeLeft = minTiming
+        while(timeLeft - (time.time() - start) > 0):
+            lastMsg = channel.last_message
+            lastMsgContent = lastMsg.content.lower()
+            if lastMsg.author == CurrentPlayer and letters in lastMsgContent and lastMsgContent in Dictionnaries[lang]["words"] and lastMsgContent not in unavailableWords:
+                unavailableWords.add(lastMsgContent) 
+                survive = True
+                break
+        timeLeft = timeLeft - (time.time() - start)
+        if not survive:
+            players.remove(CurrentPlayer)
+            await ctx.send(f'💥BOOM💥, player @{CurrentPlayer.name} haven\'t aswered as quickly enough!')
+        if Index == len(players)-1:
+            Index = 0
+        else:
+            Index += 1
+        if len(players) == 1:
+            end = True
+            winner = CurrentPlayer 
+    await ctx.send(f'@{winner.name} has won! 🏆')
 
-
-        
 ################## END OF PARTY RELATED ####################
 
 #discord.on_reaction_add(reaction, user)
