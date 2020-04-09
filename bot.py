@@ -154,7 +154,7 @@ async def play(ctx: commands.Context):
     settings = getSettings(ctx.guild.id)
     lang = settings["Language"]
     minTiming = settings["MinimumTiming"]
-    timeLeft = 15
+    timeLeft = 20
     reac = None
     players = []
     unavailableWords = set()
@@ -177,7 +177,7 @@ async def play(ctx: commands.Context):
         #CurrentPlayer.add_role()
         start = time.time()
         letters = random.choice(Dictionnaries[lang]["letters"])
-        await ctx.send(f'@{CurrentPlayer.name}, type a word that contains: {letters}')
+        await ctx.send(f'@{CurrentPlayer.name}, type a word that contains: **{letters}**')
         if timeLeft < minTiming:
             timeLeft = minTiming
         while(timeLeft - (time.time() - start) > 0):

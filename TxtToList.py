@@ -29,4 +29,3 @@ with open('Dictionnaries.json', "r", encoding="utf-8") as read_file:
     Dictionnaries["fr"]["letters"] = lettersList
 with open('Dictionnaries.json', "w", encoding="utf-8") as write_file:
     json.dump(Dictionnaries, write_file)
-print(Dictionnaries)
