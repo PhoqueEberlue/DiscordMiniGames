@@ -16,6 +16,4 @@
 
 ***$delete_channel***:
 *   Args: a number beetween 50 and 1
-*   Delete x channels$create_channel
-Args: a number beetween 50 and 1
-Create x channels to play the game
+*   Delete x channels

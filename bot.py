@@ -24,7 +24,6 @@ ChannelPrefix = 'bomb-party-'
 Languages = ["fr", "en"]
 with open('Dictionnaries.json', "r", encoding="utf-8") as read_file:
     Dictionnaries = json.load(read_file)
-print(Dictionnaries)
 ################ END OF CONSTANT POULE ####################
 
 ################### SETUP RELATED ###################
@@ -134,6 +133,13 @@ async def createRoles(ctx: commands.Context):
 ################### PARTY RELATED ####################
 @bot.command()
 async def party(ctx: commands.Context):
+    """
+    :param ctx: Le contexte
+    :return: void
+    Fonctione exécuté lors de la commande $party
+    Elle vérifie si la commande est exec dans un channel bomb-party
+    Si oui, envoie un message et ajoute un réaction
+    """
     if ctx.channel.name[:-1] != ChannelPrefix:
         await ctx.send("You can't call this command outside a bomb-party channel!")
     else:
@@ -151,7 +157,7 @@ async def play(ctx: commands.Context):
     timeLeft = 15
     reac = None
     players = []
-    unavailableWords = {}
+    unavailableWords = set()
     async for message in ctx.channel.history(limit=100):
         if message.author == bot.user:
             reac = message.reactions[0]
@@ -162,21 +168,25 @@ async def play(ctx: commands.Context):
     # for player in players:
     #     player.add_roles()
     end = False
-    Index = randint(0, len(players)-1)
+    Index = random.randint(0, len(players)-1)
+    if len(players) == 1:
+            end = True
     while(not end):
         survive = False
         CurrentPlayer = players[Index]
         #CurrentPlayer.add_role()
         start = time.time()
         letters = random.choice(Dictionnaries[lang]["letters"])
-        await ctx.send(f'@{CurrentPlayer.name},type a word that contains: {letters}')
+        await ctx.send(f'@{CurrentPlayer.name}, type a word that contains: {letters}')
         if timeLeft < minTiming:
             timeLeft = minTiming
         while(timeLeft - (time.time() - start) > 0):
-            lastMsg = channel.last_message
+            #lastMsg = bot.get_channel(channel.id).last_message
+            async for message in channel.history(limit=1):
+                lastMsg = message
             lastMsgContent = lastMsg.content.lower()
             if lastMsg.author == CurrentPlayer and letters in lastMsgContent and lastMsgContent in Dictionnaries[lang]["words"] and lastMsgContent not in unavailableWords:
-                unavailableWords.add(lastMsgContent) 
+                unavailableWords.add(lastMsgContent)
                 survive = True
                 break
         timeLeft = timeLeft - (time.time() - start)
@@ -189,8 +199,7 @@ async def play(ctx: commands.Context):
             Index += 1
         if len(players) == 1:
             end = True
-            winner = CurrentPlayer 
-    await ctx.send(f'@{winner.name} has won! 🏆')
+    await ctx.send(f'@{players[0].name} has won! 🏆')
 
 ################## END OF PARTY RELATED ####################
 
