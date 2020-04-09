@@ -20,11 +20,9 @@ for letters, number in recurence.items():
         delList.append(letters)
 for letters in delList:        
     del recurence[letters]
-print(recurence)
 lettersList = []
 for letters in recurence.keys():
     lettersList.append(letters)
-print(lettersList)
 with open('Dictionnaries.json', "r", encoding="utf-8") as read_file:
     Dictionnaries = json.load(read_file)
     Dictionnaries["fr"]["words"] = loweredList
