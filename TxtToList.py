@@ -16,7 +16,7 @@ for word in loweredList:
                 recurence[letters] = 1
 delList = []
 for letters, number in recurence.items():
-    if number < 15:
+    if number < 15 or "-" in letters:
         delList.append(letters)
 for letters in delList:        
     del recurence[letters]

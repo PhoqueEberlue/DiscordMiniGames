@@ -151,7 +151,8 @@ async def play(ctx: commands.Context):
     settings = getSettings(ctx.guild.id)
     lang = settings["Language"]
     minTiming = settings["MinimumTiming"]
-    timeLeft = 20
+    baseTiming = 20
+    timeLeft = baseTiming
     reac = None
     players = []
     unavailableWords = set()
@@ -169,7 +170,6 @@ async def play(ctx: commands.Context):
     if len(players) <= 1:
             end = True
     while(not end):
-        survive = False
         CurrentPlayer = players[Index]
         #CurrentPlayer.add_role()
         start = time.time()
@@ -177,6 +177,7 @@ async def play(ctx: commands.Context):
         await ctx.send(f'@{CurrentPlayer.name}, type a word that contains: **{letters}**')
         if timeLeft < minTiming:
             timeLeft = minTiming
+        survive = False
         while(timeLeft - (time.time() - start) > 0):
             #lastMsg = bot.get_channel(channel.id).last_message
             async for message in channel.history(limit=1):
@@ -191,6 +192,7 @@ async def play(ctx: commands.Context):
             if players.index(CurrentPlayer) == len(players) - 1: #Unless if it is the last player of the list, then we put the index back to 0
                 Index = 0
             players.remove(CurrentPlayer)
+            timeLeft = baseTiming
             await ctx.send(f'💥BOOM💥, player {CurrentPlayer.mention} haven\'t aswered as quickly enough!')
         else: 
             if Index == len(players)-1:
