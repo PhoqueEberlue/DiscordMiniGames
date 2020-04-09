@@ -1,4 +1,3 @@
-import discord
 import json
 import time
 from discord.ext import commands
@@ -16,7 +15,7 @@ async def on_ready():
 async def on_guild_join(guild):
     await guild.create_role(name="Bomb Party Admin")
     await guild.create_role(name="BP Current Player")
-    await guild.invoke(createChannel)
+    # await guild.invoke(createChannel) #FIX THIS PLS
 
 
 ################ CONSTANT POULE ####################
@@ -134,11 +133,9 @@ async def createRoles(ctx: commands.Context):
 @bot.command()
 async def party(ctx: commands.Context):
     """
-    :param ctx: Le contexte
-    :return: void
-    Fonctione exécuté lors de la commande $party
-    Elle vérifie si la commande est exec dans un channel bomb-party
-    Si oui, envoie un message et ajoute un réaction
+    param: ctx, the context where the command is called
+    return: void
+    This command check if the TextChannel where it is called starts with the ChannelPrefix then create a party message if it is true
     """
     if ctx.channel.name[:-1] != ChannelPrefix:
         await ctx.send("You can't call this command outside a bomb-party channel!")
@@ -169,7 +166,7 @@ async def play(ctx: commands.Context):
     #     player.add_roles()
     end = False
     Index = random.randint(0, len(players)-1)
-    if len(players) == 1:
+    if len(players) <= 1:
             end = True
     while(not end):
         survive = False
@@ -190,16 +187,22 @@ async def play(ctx: commands.Context):
                 survive = True
                 break
         timeLeft = timeLeft - (time.time() - start)
-        if not survive:
+        if not survive: #If someone loses, then we don't have to increase the index 
+            if players.index(CurrentPlayer) == len(players) - 1: #Unless if it is the last player of the list, then we put the index back to 0
+                Index = 0
             players.remove(CurrentPlayer)
-            await ctx.send(f'💥BOOM💥, player @{CurrentPlayer.name} haven\'t aswered as quickly enough!')
-        if Index == len(players)-1:
-            Index = 0
-        else:
-            Index += 1
+            await ctx.send(f'💥BOOM💥, player {CurrentPlayer.mention} haven\'t aswered as quickly enough!')
+        else: 
+            if Index == len(players)-1:
+                Index = 0
+            else:
+                Index += 1
         if len(players) == 1:
             end = True
-    await ctx.send(f'@{players[0].name} has won! 🏆')
+    if len(players) == 0:
+        await ctx.send(f'This party has been canceled as no players joined...')
+    else:
+        await ctx.send(f'{players[0].mention} has won! 🏆')
 
 ################## END OF PARTY RELATED ####################
 

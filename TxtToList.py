@@ -1,6 +1,6 @@
 import json
 
-F = open("liste_francais.txt", "r")
+F = open("txt_files/liste_francais.txt", "r")
 wordList = F.read().split("\n")
 loweredList = []
 for word in wordList:
