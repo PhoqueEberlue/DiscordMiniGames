@@ -1,0 +1,11 @@
+-Add un msg épinglé dans chaque channels crées qui resume les commandes
+
+-secure la récupération de message de party par le bot
+
+-montrer la liste au joueurs avant de commencer la partie
+
+ça à l'air d'être fix -fix bug éléminations (élimine pas la bonne personne ???)
+
+-Mettre un tableau des highScore
+
+-ajouter des vie

@@ -14,9 +14,17 @@ for word in loweredList:
                 recurence[letters] += 1
             else:
                 recurence[letters] = 1
+for word in loweredList:
+    for i in range(len(word)):
+        if i < len(word)-2:
+            letters = str(word[i] + word[i+1] + word[i+2])
+            if letters in recurence.keys():
+                recurence[letters] += 1
+            else:
+                recurence[letters] = 1
 delList = []
 for letters, number in recurence.items():
-    if number < 15 or "-" in letters:
+    if number < 100 or "-" in letters:
         delList.append(letters)
 for letters in delList:        
     del recurence[letters]

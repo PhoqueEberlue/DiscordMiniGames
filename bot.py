@@ -17,21 +17,22 @@ async def on_guild_join(guild):
     await guild.create_role(name="BP Current Player")
     # await guild.invoke(createChannel) #FIX THIS PLS
 
+###################################################################### BOMB PARTY ######################################################################
 
-################ CONSTANT POULE ####################
+################ CONSTANT POULE ################
 ChannelPrefix = 'bomb-party-'
 Languages = ["fr", "en"]
 with open('Dictionnaries.json', "r", encoding="utf-8") as read_file:
     Dictionnaries = json.load(read_file)
-################ END OF CONSTANT POULE ####################
+############# ENDOF CONSTANT POULE #############
 
-################### SETUP RELATED ###################
+################ SETUP RELATED ################
 # @bot.command()
 # async def quickSetup(ctx: commands.Context):
 #     await ctx.invoke(createChannel)
-################### SETUP RELATED ###################
+################ SETUP RELATED ################
 
-################### SETTINGS RELATED ###################
+################ SETTINGS RELATED ################
 def getSettings(GuildId):
     file_name = './settings/' + str(GuildId) + '.json'
     try:
@@ -72,9 +73,9 @@ async def setTiming(ctx: commands.Context, arg):
         await ctx.send(f'Time have been set to {arg} seconds')
     else:
         await ctx.send("You can only chose a number between 0 and 10.")
-############## END OF SETTINGS RELATED ################
+############# ENDOF SETTINGS RELATED #############
 
-################### CHANNELS RELATED ####################
+################ CHANNELS RELATED ################
 def getMaxChannel(channels):
     i = 0
     done = True
@@ -120,16 +121,16 @@ async def deleteChannel(ctx: commands.Context, arg=1):
         await ctx.send(f'{arg} channel(s) have been deleted.')
     else:
         await ctx.send('You can\'t delete more than 50 or less than 1 channels at once')
-################### END OF CHANNELS RELATED ####################
+############# ENDOF CHANNELS RELATED #############
 
-################### ROLES RELATED ####################
+################ ROLES RELATED ################
 @bot.command()
 async def createRoles(ctx: commands.Context):
     await ctx.guild.create_role(name="Bomb Party Admin")
     await ctx.guild.create_role(name="BP Current Player")
-################### END OF ROLES RELATED ####################
+############# ENDOF ROLES RELATED #############
 
-################### PARTY RELATED ####################
+################ PARTY RELATED ################
 @bot.command()
 async def party(ctx: commands.Context):
     """
@@ -151,7 +152,7 @@ async def play(ctx: commands.Context):
     settings = getSettings(ctx.guild.id)
     lang = settings["Language"]
     minTiming = settings["MinimumTiming"]
-    baseTiming = 20
+    baseTiming = 15
     timeLeft = baseTiming
     reac = None
     players = []
@@ -174,12 +175,11 @@ async def play(ctx: commands.Context):
         #CurrentPlayer.add_role()
         start = time.time()
         letters = random.choice(Dictionnaries[lang]["letters"])
-        await ctx.send(f'@{CurrentPlayer.name}, type a word that contains: **{letters}**')
+        await ctx.send(f'{CurrentPlayer.mention}, type a word that contains: **{letters}**')
         if timeLeft < minTiming:
             timeLeft = minTiming
         survive = False
         while(timeLeft - (time.time() - start) > 0):
-            #lastMsg = bot.get_channel(channel.id).last_message
             async for message in channel.history(limit=1):
                 lastMsg = message
             lastMsgContent = lastMsg.content.lower()
@@ -194,8 +194,8 @@ async def play(ctx: commands.Context):
             players.remove(CurrentPlayer)
             timeLeft = baseTiming
             await ctx.send(f'💥BOOM💥, player {CurrentPlayer.mention} haven\'t aswered as quickly enough!')
-        else: 
-            if Index == len(players)-1:
+        else:
+            if Index >= len(players) - 1:
                 Index = 0
             else:
                 Index += 1
@@ -206,7 +206,18 @@ async def play(ctx: commands.Context):
     else:
         await ctx.send(f'{players[0].mention} has won! 🏆')
 
-################## END OF PARTY RELATED ####################
+############# ENDOF PARTY RELATED #############
 
-#discord.on_reaction_add(reaction, user)
+################################################################### ENDOF BOMB PARTY ###################################################################
+
+
+
+
+
+
+
+
+
+
+
 bot.run(getToken())
