@@ -156,14 +156,16 @@ async def play(ctx: commands.Context):
     timeLeft = baseTiming
     reac = None
     players = [] #e.g: [{"User": userInstance1, "Life": 2}, {"User": userInstance2, "Life": 2}, {"User": userInstance1, "Life": 1}]
+    strPlayerList = 'Players:'
     unavailableWords = set()
     async for message in ctx.channel.history(limit=100):
-        if message.author == bot.user:
+        if message.author == bot.user and message.content == "Party created, click on the reaction bellow to join!":
             reac = message.reactions[0]
             break
     async for user in reac.users():
         if user != bot.user:
             players.append({"User": user, "Life": 2})
+            strPlayerList += f' {user.mention} |'
     # for player in players:
     #     player.add_roles()
     end = False
@@ -252,10 +254,5 @@ async def play(ctx: commands.Context):
 #     while(not end):
 #         pass
 ################################################################### ENDOF POWER 4 ###################################################################
-
-
-
-
-
 
 bot.run(getToken())

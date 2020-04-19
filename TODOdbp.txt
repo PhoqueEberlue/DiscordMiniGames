@@ -1,8 +1,4 @@
-Important -secure la récupération de message de party par le bot
-
-Important -montrer la liste au joueurs avant de commencer la partie
-
-Important -mettre de base le joueur qui crée la partie
+Important -mettre de base le joueur qui crée la partie (ça va être dur de rendre cela sur à 100%)
 
 Obligatoire mais pas dans l'imédiat - Mettre un tableau des highScore en fonction des servers et en global
 
