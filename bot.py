@@ -194,11 +194,14 @@ async def play(ctx: commands.Context):
             if CurrentPlayer["Life"] >= 0:
                 players.remove(CurrentPlayer)
                 await ctx.send(f'💥BOOM💥, player {CurrentPlayer["User"].mention} haven\'t aswered as quickly enough!')
+                if Index >= len(players) - 1:
+                    Index = 0
             else:
                 await ctx.send(f'💥BOOM💥, player {CurrentPlayer["User"].mention} has only {CurrentPlayer["Life"]} life remaining...')
-                Index += 1
-            if Index == len(players) - 1:
-                Index = 0
+                if Index >= len(players) - 1:
+                    Index = 0
+                else:
+                    Index += 1
         else:
             if Index >= len(players) - 1:
                 Index = 0
