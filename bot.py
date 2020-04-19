@@ -155,7 +155,7 @@ async def play(ctx: commands.Context):
     baseTiming = 15
     timeLeft = baseTiming
     reac = None
-    players = []
+    players = [] #e.g: [{"User": userInstance1, "Life": 2}, {"User": userInstance2, "Life": 2}, {"User": userInstance1, "Life": 1}]
     unavailableWords = set()
     async for message in ctx.channel.history(limit=100):
         if message.author == bot.user:
@@ -163,7 +163,7 @@ async def play(ctx: commands.Context):
             break
     async for user in reac.users():
         if user != bot.user:
-            players.append(user)
+            players.append({"User": user, "Life": 2})
     # for player in players:
     #     player.add_roles()
     end = False
@@ -175,25 +175,30 @@ async def play(ctx: commands.Context):
         #CurrentPlayer.add_role()
         start = time.time()
         letters = random.choice(Dictionnaries[lang]["letters"])
-        await ctx.send(f'{CurrentPlayer.mention}, type a word that contains: **{letters}**')
+        await ctx.send(f'{CurrentPlayer["User"].mention}, type a word that contains: **{letters}**')
         if timeLeft < minTiming:
             timeLeft = minTiming
-        survive = False
+        explode = True
         while(timeLeft - (time.time() - start) > 0):
             async for message in channel.history(limit=1):
                 lastMsg = message
             lastMsgContent = lastMsg.content.lower()
-            if lastMsg.author == CurrentPlayer and letters in lastMsgContent and lastMsgContent in Dictionnaries[lang]["words"] and lastMsgContent not in unavailableWords:
+            if lastMsg.author == CurrentPlayer["User"] and letters in lastMsgContent and lastMsgContent in Dictionnaries[lang]["words"] and lastMsgContent not in unavailableWords:
                 unavailableWords.add(lastMsgContent)
-                survive = True
+                explode = False
                 break
         timeLeft = timeLeft - (time.time() - start)
-        if not survive: #If someone loses, then we don't have to increase the index 
-            if players.index(CurrentPlayer) == len(players) - 1: #Unless if it is the last player of the list, then we put the index back to 0
-                Index = 0
-            players.remove(CurrentPlayer)
+        if explode:
             timeLeft = baseTiming
-            await ctx.send(f'💥BOOM💥, player {CurrentPlayer.mention} haven\'t aswered as quickly enough!')
+            CurrentPlayer["Life"] -= 1
+            if CurrentPlayer["Life"] >= 0:
+                players.remove(CurrentPlayer)
+                await ctx.send(f'💥BOOM💥, player {CurrentPlayer["User"].mention} haven\'t aswered as quickly enough!')
+            else:
+                await ctx.send(f'💥BOOM💥, player {CurrentPlayer["User"].mention} has only {CurrentPlayer["Life"]} life remaining...')
+                Index += 1
+            if Index == len(players) - 1:
+                Index = 0
         else:
             if Index >= len(players) - 1:
                 Index = 0
@@ -202,9 +207,9 @@ async def play(ctx: commands.Context):
         if len(players) == 1:
             end = True
     if len(players) == 0:
-        await ctx.send(f'This party has been canceled as no players joined...')
+        await ctx.send(f'This party has been canceled as not enough players joined...')
     else:
-        await ctx.send(f'{players[0].mention} has won! 🏆')
+        await ctx.send(f'{players[0]["User"].mention} has won! 🏆')
 
 ############# ENDOF PARTY RELATED #############
 

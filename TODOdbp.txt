@@ -1,5 +1,3 @@
-GIGA IMPORTANT -ajouter des vies
-
 Important -secure la récupération de message de party par le bot
 
 Important -montrer la liste au joueurs avant de commencer la partie
