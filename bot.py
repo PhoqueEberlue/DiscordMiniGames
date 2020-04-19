@@ -166,7 +166,7 @@ async def play(ctx: commands.Context):
         if user != bot.user:
             players.append({"User": user, "Life": 2})
             strPlayerList += f' {user.mention} |'
-    ctx.send(strPlayerList)
+    await ctx.send(strPlayerList)
     # for player in players:
     #     player.add_roles()
     end = False
