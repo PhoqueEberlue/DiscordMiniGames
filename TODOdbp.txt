@@ -1,11 +1,14 @@
--Add un msg épinglé dans chaque channels crées qui resume les commandes
+GIGA IMPORTANT -ajouter des vies
 
--secure la récupération de message de party par le bot
+Important -secure la récupération de message de party par le bot
 
--montrer la liste au joueurs avant de commencer la partie
+Important -montrer la liste au joueurs avant de commencer la partie
 
-ça à l'air d'être fix -fix bug éléminations (élimine pas la bonne personne ???)
+Important -mettre de base le joueur qui crée la partie
 
--Mettre un tableau des highScore
+Obligatoire mais pas dans l'imédiat - Mettre un tableau des highScore en fonction des servers et en global
 
--ajouter des vie
+Optionnel tbh - Add un msg épinglé dans chaque channels crées qui resume les commandes
+
+
+Il va falloir amélliorer la gestion des commandes pour pouvoir acceuillir différents mini-jeux
