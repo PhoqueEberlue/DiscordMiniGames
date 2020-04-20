@@ -3,7 +3,6 @@ import time
 from discord.ext import commands
 from tokenConfig import getToken
 import random
-from random import randint
 
 bot = commands.Bot(command_prefix='$')
 
