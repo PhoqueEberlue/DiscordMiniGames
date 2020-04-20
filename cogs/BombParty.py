@@ -1,7 +1,7 @@
-import json
 import time
-from discord.ext import commands
+import json
 import random
+from discord.ext import commands
 
 class BombParty(commands.Cog):
 
@@ -15,6 +15,11 @@ class BombParty(commands.Cog):
             self._dictionnaries = json.load(read_file)
         ############ ENDOF CONSTANT POULE ############
 
+    @commands.Cog.listener()
+    async def on_guild_join(self, guild):
+        await guild.create_role(name="Bomb Party Admin")
+        await guild.create_role(name="BP Current Player")
+        # await guild.invoke(createChannel) #FIX THIS PLS
     ################ SETTINGS RELATED ################
     @staticmethod
     def getSettings(GuildId):
@@ -23,7 +28,7 @@ class BombParty(commands.Cog):
             with open(file_name, "r", encoding="utf-8") as read_file:
                 settings = json.load(read_file)
         except FileNotFoundError:
-            with open('./settings/DefaultSettings.json', "r", encoding="utf-8") as read_file:
+            with open('../settings/DefaultSettings.json', "r", encoding="utf-8") as read_file:
                 settings = json.load(read_file)
         return settings
 
@@ -205,4 +210,4 @@ class BombParty(commands.Cog):
     ############# ENDOF PARTY RELATED #############
 
 def setup(bot):
-    bot.add_cog(BombParty(bot))
+    bot.add_cog(BombParty(bot))     
