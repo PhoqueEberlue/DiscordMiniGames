@@ -10,7 +10,6 @@ class BombParty(commands.Cog):
         ############### CONSTANT POULE ###############
         self._channelPrefix = 'bomb-party-'
         self._languages = ["fr", "en"]
-        Dictionnaries = None
         with open('Dictionnaries.json', "r", encoding="utf-8") as read_file:
             self._dictionnaries = json.load(read_file)
         ############ ENDOF CONSTANT POULE ############
@@ -20,6 +19,7 @@ class BombParty(commands.Cog):
         await guild.create_role(name="Bomb Party Admin")
         await guild.create_role(name="BP Current Player")
         # await guild.invoke(createChannel) #FIX THIS PLS
+        
     ################ SETTINGS RELATED ################
     @staticmethod
     def getSettings(GuildId):
@@ -210,4 +210,4 @@ class BombParty(commands.Cog):
     ############# ENDOF PARTY RELATED #############
 
 def setup(bot):
-    bot.add_cog(BombParty(bot))     
+    bot.add_cog(BombParty(bot))

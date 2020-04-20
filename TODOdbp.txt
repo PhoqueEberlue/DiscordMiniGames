@@ -1,8 +1,15 @@
+###################################################### Bomp Party ######################################################
+OBLIGATOIRE - Ajouter des restrictions au commandes de gestion du bot avec un role modérateur
+
+OBLIGATOIRE - Ajouter un bool qui permet d'autoriser ou non le fait de créer des parties en dehors des channels fait pour
+
 Important -mettre de base le joueur qui crée la partie (ça va être dur de rendre cela sur à 100%)
 
-Obligatoire mais pas dans l'imédiat - Mettre un tableau des highScore en fonction des servers et en global
+Un gros plus mais pas dans l'imédiat - Mettre un tableau des highScore en fonction des servers et en global
 
 Optionnel tbh - Add un msg épinglé dans chaque channels crées qui resume les commandes
-
+################################################### ENDOF Bomp Party ###################################################
 
 Il va falloir amélliorer la gestion des commandes pour pouvoir acceuillir différents mini-jeux
+
+Faire des traductions françaises des messages envoyés par le bot
