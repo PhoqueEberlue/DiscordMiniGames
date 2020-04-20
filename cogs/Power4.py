@@ -4,7 +4,7 @@ class BombParty(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        
+
     @commands.command()
     async def power4(self, ctx: commands.Context):
         await ctx.send("Party created, click on the reaction bellow to join!")
@@ -29,3 +29,6 @@ class BombParty(commands.Cog):
         end = False
         while(not end):
             pass
+
+def setup(bot):
+    bot.add_cog(BombParty(bot))   
