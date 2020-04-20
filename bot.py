@@ -19,6 +19,8 @@ async def on_ready():
 # async def unload(ctx: commands.Context, extension):
 #     bot.unload_extension(f'cogs.{extension}')
 
+
+#Loads up every cogs in the ./cogs file
 for file_name in os.listdir('./cogs'):
     if file_name.endswith('.py'):
         bot.load_extension(f'cogs.{file_name[:-3]}')
