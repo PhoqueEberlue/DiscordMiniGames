@@ -23,18 +23,18 @@ class BombParty(commands.Cog):
     ################ SETTINGS RELATED ################
     @staticmethod
     def getSettings(GuildId):
-        file_name = '../settings/' + str(GuildId) + '.json'
+        file_name = './settings/' + str(GuildId) + '.json'
         try:
             with open(file_name, "r", encoding="utf-8") as read_file:
                 settings = json.load(read_file)
         except FileNotFoundError:
-            with open('../settings/DefaultSettings.json', "r", encoding="utf-8") as read_file:
+            with open('./settings/DefaultSettings.json', "r", encoding="utf-8") as read_file:
                 settings = json.load(read_file)
         return settings
 
     @staticmethod
     def setSettings(GuildId, settings):
-        file_name = '../settings/' + str(GuildId) + '.json'
+        file_name = './settings/' + str(GuildId) + '.json'
         with open(file_name, "w", encoding="utf-8") as write_file:
             json.dump(settings, write_file)
 
