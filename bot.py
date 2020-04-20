@@ -194,7 +194,7 @@ async def play(ctx: commands.Context):
         if explode:
             timeLeft = baseTiming
             CurrentPlayer["Life"] -= 1
-            if CurrentPlayer["Life"] >= 0:
+            if CurrentPlayer["Life"] <= 0:
                 players.remove(CurrentPlayer)
                 await ctx.send(f'💥BOOM💥, player {CurrentPlayer["User"].mention} haven\'t aswered as quickly enough!')
                 if Index >= len(players) - 1:

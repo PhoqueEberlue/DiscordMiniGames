@@ -24,7 +24,7 @@ for word in loweredList:
                 recurence[letters] = 1
 delList = []
 for letters, number in recurence.items():
-    if number < 100 or "-" in letters:
+    if number < 250 or "-" in letters:
         delList.append(letters)
 for letters in delList:        
     del recurence[letters]
