@@ -22,6 +22,10 @@ class BombParty(commands.Cog):
     ################ SETTINGS RELATED ################
     @staticmethod
     def isAdmin(Member):
+        """
+        parameter: Member
+        return: a boolean that indicates if the Member has the Admin role
+        """
         for role in Member.roles:
             if role.name == "Bomb Party Admin":
                 return True
@@ -29,6 +33,10 @@ class BombParty(commands.Cog):
     
     @staticmethod
     def getSettings(GuildId):
+        """
+        parameter: GuildId
+        return: a dictionnary that represent the settings of a server (if none settings has been changed it will use the default file) e.g: ./settings/DefaultSettings.json
+        """
         file_name = './settings/' + str(GuildId) + '.json'
         try:
             with open(file_name, "r", encoding="utf-8") as read_file:
@@ -40,18 +48,29 @@ class BombParty(commands.Cog):
 
     @staticmethod
     def setSettings(GuildId, settings):
+        """
+        parameter: GuildId, settings (dictionnary)
+        """
         file_name = './settings/' + str(GuildId) + '.json'
         with open(file_name, "w", encoding="utf-8") as write_file:
             json.dump(settings, write_file)
 
     @commands.command()
     async def showSettings(self, ctx: commands.Context):
+        """
+        parameter: self, ctx 
+        send a message showing the guild's settings
+        """
         if self.isAdmin(ctx.author):
             settings = self.getSettings(ctx.guild.id)
             await ctx.send(f'Language: {settings["Language"]}\nMinimum timing of the bomb: {settings["MinimumTiming"]} seconds')
 
     @commands.command()
     async def setLanguage(self, ctx: commands.Context, arg):
+        """
+        parameter: self, ctx, arg (an element of self._languages)
+        change the language setting of the guild
+        """
         if self.isAdmin(ctx.author):
             settings = self.getSettings(ctx.guild.id)
             if arg in self._languages:
@@ -63,6 +82,10 @@ class BombParty(commands.Cog):
 
     @commands.command()
     async def setTiming(self, ctx: commands.Context, arg):
+        """
+        parameter: self, ctx, arg (an integer)
+        change the minimum timing of the bomb setting of the guild
+        """
         if self.isAdmin(ctx.author):
             settings = self.getSettings(ctx.guild.id)
             arg = int(arg)
@@ -76,6 +99,10 @@ class BombParty(commands.Cog):
 
     ################ CHANNELS RELATED ################
     def getMaxChannel(self, channels):
+        """
+        parameter: self, channels (a list of channel)
+        return: the highest textChannel of bomb party
+        """
         i = 0
         done = True
         while(done):
@@ -88,6 +115,10 @@ class BombParty(commands.Cog):
 
     @staticmethod
     def getChannelNamesList(guild):
+        """
+        parameter: guild
+        return a list of channel name in a given guild
+        """
         channels = []
         for channel in guild.text_channels:
             channels.append(channel.name)
@@ -95,6 +126,10 @@ class BombParty(commands.Cog):
 
     @commands.command()
     async def createChannel(self, ctx: commands.Context, arg=1):
+        """
+        parameter: self, ctx, arg (an integer)
+        creates {arg} bomb party channel
+        """
         if self.isAdmin(ctx.author):
             arg = int(arg)
             if arg <= 50 and arg >=1:
@@ -109,6 +144,10 @@ class BombParty(commands.Cog):
 
     @commands.command()
     async def deleteChannel(self, ctx: commands.Context, arg=1):
+        """
+        parameter: self, ctx, arg (an integer)
+        deletes {arg} bomb party channel
+        """
         if self.isAdmin(ctx.author):
             arg = int(arg)
             if arg <= 50 and arg >=1:
@@ -128,6 +167,10 @@ class BombParty(commands.Cog):
     ################ ROLES RELATED ################
     @commands.command()
     async def createRoles(self, ctx: commands.Context):
+        """
+        parameter: self, ctx
+        creates roles that are needed for the bot to work
+        """
         if self.isAdmin(ctx.author):
             await ctx.guild.create_role(name="Bomb Party Admin")
     ############# ENDOF ROLES RELATED #############
@@ -136,8 +179,7 @@ class BombParty(commands.Cog):
     @commands.command()
     async def party(self, ctx: commands.Context):
         """
-        param: ctx, the context where the command is called
-        return: void
+        parameter: ctx, the context where the command is called
         This command check if the TextChannel where it is called starts with the _channelPrefix then create a party message if it is true
         """
         if ctx.channel.name[:-1] != self._channelPrefix:
@@ -149,6 +191,10 @@ class BombParty(commands.Cog):
 
     @commands.command()
     async def play(self, ctx: commands.Context):
+        """
+        parameter: self, ctx
+        Bomb party game itself, this function is absolutely massive and could be simplified for sure
+        """
         winner = None
         channel = ctx.channel
         settings = self.getSettings(ctx.guild.id)
@@ -223,7 +269,6 @@ class BombParty(commands.Cog):
                 await ctx.send(f'This party has been canceled as not enough players joined...')
         else:
             await ctx.send(f'No party have been created.')
-            
     ############# ENDOF PARTY RELATED #############
 
 def setup(bot):
