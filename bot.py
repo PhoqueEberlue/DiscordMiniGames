@@ -25,7 +25,15 @@ async def unload(ctx: commands.Context, extension):
             await ctx.send(f'Le module {extension} à été unload')
         except commands.errors.ExtensionNotLoaded as error:
             await ctx.send(error)
-    
+            
+@bot.command()
+async def refresh(ctx: commands.Context, extension):
+    if ctx.author.id == 205434999888019456:
+        try:
+            bot.unload_extension(f'games.{extension}.Cog{extension}')
+            await load(ctx, extension)
+        except commands.errors.ExtensionNotLoaded as error:
+            await ctx.send(error)
 
 #Loads up every cogs in the ./games file
 for rep in os.listdir('./games'):
