@@ -16,9 +16,10 @@ async def on_ready():
 # async def unload(ctx: commands.Context, extension):
 #     bot.unload_extension(f'cogs.{extension}')
 
-#Loads up every cogs in the ./cogs file
-for file_name in os.listdir('./cogs'):
-    if file_name.endswith('.py'):
-        bot.load_extension(f'cogs.{file_name[:-3]}') #Deletes the ".py" at the end of the filename
+#Loads up every cogs in the ./games file
+for rep in os.listdir('./games'):
+    for file_name in os.listdir('./games/' + rep):
+        if file_name.startswith('Cog') and file_name.endswith('.py'):
+            bot.load_extension('games.' + rep + f'.{file_name[:-3]}') #Deletes the ".py" at the end of the filename
 
 bot.run(getToken())
