@@ -230,6 +230,7 @@ class BombParty(commands.Cog):
                         timeLeft = minTiming
                     explode = True
                     while(timeLeft - (time.time() - start) > 0):
+                        time.sleep(0.1)
                         async for message in channel.history(limit=1):
                             lastMsg = message
                         lastMsgContent = lastMsg.content.lower()
