@@ -1,14 +1,16 @@
-class player:
-    
+class Player:
+    """
+    oui
+    """
     def __init__(self, user):
         self._user = user
         self._life = 2
         
     #GETTERS
-    def getUser(self):
+    def user(self):
         return self._user
     
-    def getLife(self):
+    def life(self):
         return self._life
     
     #SETTERS

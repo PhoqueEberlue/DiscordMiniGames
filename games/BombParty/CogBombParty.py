@@ -2,6 +2,7 @@ import time
 import json
 import random
 from .PlayerList import PlayerList
+from .Player import Player
 from discord.ext import commands
 
 class BombParty(commands.Cog):
@@ -196,7 +197,6 @@ class BombParty(commands.Cog):
         parameter: self, ctx
         Bomb party game itself, this function is absolutely massive and could be simplified for sure
         """
-        winner = None
         channel = ctx.channel
         settings = self.getSettings(ctx.guild.id)
         lang = settings["Language"]
@@ -204,7 +204,7 @@ class BombParty(commands.Cog):
         baseTiming = 15
         timeLeft = baseTiming
         reac = None
-        players = [] #e.g: [{"User": userInstance1, "Life": 2}, {"User": userInstance2, "Life": 2}, {"User": userInstance1, "Life": 1}]
+        players = PlayerList()
         strPlayerList = 'Players:'
         unavailableWords = set()
         partyFindBool = False
@@ -216,22 +216,16 @@ class BombParty(commands.Cog):
         if partyFindBool:
             async for user in reac.users():
                 if user != self.bot.user:
-                    players.append({"User": user, "Life": 2})
+                    players.appendPlayer(Player(user))
                     strPlayerList += f' {user.mention} |'
             if len(players) > 1:
                 await ctx.send(strPlayerList)
-                # for player in players:
-                #     player.add_roles()
                 end = False
-                Index = random.randint(0, len(players)-1)
-                if len(players) <= 1:
-                        end = True
                 while(not end):
-                    CurrentPlayer = players[Index]
-                    #CurrentPlayer.add_role()
+                    CurrentPlayer = players.currentPlayer()
                     start = time.time()
                     letters = random.choice(self._dictionnaries[lang]["letters"])
-                    await ctx.send(f'{CurrentPlayer["User"].mention}, type a word that contains: **{letters}**')
+                    await ctx.send(f'{CurrentPlayer.user().mention}, type a word that contains: **{letters}**')
                     if timeLeft < minTiming:
                         timeLeft = minTiming
                     explode = True
@@ -239,33 +233,23 @@ class BombParty(commands.Cog):
                         async for message in channel.history(limit=1):
                             lastMsg = message
                         lastMsgContent = lastMsg.content.lower()
-                        if lastMsg.author == CurrentPlayer["User"] and letters in lastMsgContent and lastMsgContent in self._dictionnaries[lang]["words"] and lastMsgContent not in unavailableWords:
+                        if lastMsg.author == CurrentPlayer.user() and letters in lastMsgContent and lastMsgContent in self._dictionnaries[lang]["words"] and lastMsgContent not in unavailableWords:
                             unavailableWords.add(lastMsgContent)
                             explode = False
                             break
                     timeLeft = timeLeft - (time.time() - start)
                     if explode:
                         timeLeft = baseTiming
-                        CurrentPlayer["Life"] -= 1
-                        if CurrentPlayer["Life"] <= 0:
-                            players.remove(CurrentPlayer)
-                            await ctx.send(f'💥BOOM💥, player {CurrentPlayer["User"].mention} haven\'t aswered as quickly enough!')
-                            if Index >= len(players) - 1:
-                                Index = 0
+                        CurrentPlayer.decreaseLife()
+                        if CurrentPlayer.life() <= 0:
+                            players.removePlayer(CurrentPlayer)
+                            await ctx.send(f'💥BOOM💥, player {CurrentPlayer.user().mention} haven\'t aswered as quickly enough!')
                         else:
-                            await ctx.send(f'💥BOOM💥, player {CurrentPlayer["User"].mention} has only {CurrentPlayer["Life"]} life remaining...')
-                            if Index >= len(players) - 1:
-                                Index = 0
-                            else:
-                                Index += 1
-                    else:
-                        if Index >= len(players) - 1:
-                            Index = 0
-                        else:
-                            Index += 1
-                    if len(players) == 1:
+                            await ctx.send(f'💥BOOM💥, player {CurrentPlayer.user().mention} has only {CurrentPlayer.life()} life remaining...')
+                    players.increaseIndex()
+                    if players.isEnd():
                         end = True
-                await ctx.send(f'{players[0]["User"].mention} has won! 🏆')
+                await ctx.send(f'{players.getWinner().user().mention} has won! 🏆')
             else:
                 await ctx.send(f'This party has been canceled as not enough players joined...')
         else:
