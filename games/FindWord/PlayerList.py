@@ -1,5 +1,5 @@
 from random import randint
-from .Player import Player
+from games.FindWord.Player import Player
 
 class PlayerList:
     

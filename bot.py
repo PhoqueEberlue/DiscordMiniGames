@@ -7,6 +7,10 @@ bot = commands.Bot(command_prefix='$')
 @bot.event
 async def on_ready():
     print('bot is ready')
+    
+@bot.event
+async def on_guild_join(self, guild):
+    await guild.create_role(name="Discord Mini Games Admin")
 
 @bot.command()
 async def load(ctx: commands.Context, extension):

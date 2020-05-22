@@ -5,20 +5,18 @@ from .PlayerList import PlayerList
 from .Player import Player
 from discord.ext import commands
 
-class BombParty(commands.Cog):
+class FindWord(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
         ############### CONSTANT POULE ###############
-        self._channelPrefix = 'bomb-party-'
+        self._channelPrefix = 'FindWord-'
         self._languages = ["fr", "en"]
         with open('Dictionnaries.json', "r", encoding="utf-8") as read_file:
             self._dictionnaries = json.load(read_file)
         ############ ENDOF CONSTANT POULE ############
 
-    @commands.Cog.listener()
-    async def on_guild_join(self, guild):
-        await guild.create_role(name="Bomb Party Admin")
+    
         # await guild.invoke(createChannel) #FIX THIS PLS
         
     ################ SETTINGS RELATED ################
@@ -29,7 +27,7 @@ class BombParty(commands.Cog):
         return: a boolean that indicates if the Member has the Admin role
         """
         for role in Member.roles:
-            if role.name == "Bomb Party Admin":
+            if role.name == "Discord Mini Games Admin":
                 return True
         return False
     
@@ -103,7 +101,7 @@ class BombParty(commands.Cog):
     def getMaxChannel(self, channels):
         """
         parameter: self, channels (a list of channel)
-        return: the highest textChannel of bomb party
+        return: the highest textChannel of the game
         """
         i = 0
         done = True
@@ -130,7 +128,7 @@ class BombParty(commands.Cog):
     async def createChannel(self, ctx: commands.Context, arg=1):
         """
         parameter: self, ctx, arg (an integer)
-        creates {arg} bomb party channel
+        creates {arg} FindWord channel
         """
         if self.isAdmin(ctx.author):
             arg = int(arg)
@@ -148,7 +146,7 @@ class BombParty(commands.Cog):
     async def deleteChannel(self, ctx: commands.Context, arg=1):
         """
         parameter: self, ctx, arg (an integer)
-        deletes {arg} bomb party channel
+        deletes {arg} FindWord channel
         """
         if self.isAdmin(ctx.author):
             arg = int(arg)
@@ -174,7 +172,7 @@ class BombParty(commands.Cog):
         creates roles that are needed for the bot to work
         """
         if self.isAdmin(ctx.author):
-            await ctx.guild.create_role(name="Bomb Party Admin")
+            await ctx.guild.create_role(name="Discord Mini Games Admin")
     ############# ENDOF ROLES RELATED #############
 
     ################ PARTY RELATED ################
@@ -185,7 +183,7 @@ class BombParty(commands.Cog):
         This command check if the TextChannel where it is called starts with the _channelPrefix then create a party message if it is true
         """
         if ctx.channel.name[:-1] != self._channelPrefix:
-            await ctx.send("You can't call this command outside a bomb-party channel!")
+            await ctx.send("You can't call this command outside a findword channel!")
         else:
             await ctx.send("Party created, click on the reaction bellow to join!")
             partyMessage = ctx.channel.last_message
@@ -195,7 +193,7 @@ class BombParty(commands.Cog):
     async def play(self, ctx: commands.Context):
         """
         parameter: self, ctx
-        Bomb party game itself, this function is absolutely massive and could be simplified for sure
+        The game itself, this function is absolutely massive and could be simplified for sure
         """
         channel = ctx.channel
         settings = self.getSettings(ctx.guild.id)
@@ -258,4 +256,4 @@ class BombParty(commands.Cog):
     ############# ENDOF PARTY RELATED #############
 
 def setup(bot):
-    bot.add_cog(BombParty(bot))
+    bot.add_cog(FindWord(bot))
