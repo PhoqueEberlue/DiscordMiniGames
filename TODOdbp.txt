@@ -3,7 +3,7 @@ OBLIGATOIRE - Ajouter un bool qui permet d'autoriser ou non le fait de créer de
 
 Important - Dictionnaire anglais
 
-Un gros plus mais pas dans l'imédiat - Mettre un tableau des highScore en fonction des servers et en global
+Un gros plus mais pas dans l'imédiat - Mettre un tableau des highScore en fonction des servers et en global -> implémenter une base de donnée SQLLITE (mariadb serait peut être overkil, dans tout les cas on peut toujours switch entre les deux)
 
 Optionnel tbh - Add un msg épinglé dans chaque channels crées qui resume les commandes
 
@@ -12,4 +12,4 @@ Un plus  -mettre de base le joueur qui crée la partie -> très facile à faire 
 
 Il va falloir amélliorer la gestion des commandes pour pouvoir acceuillir différents mini-jeux
 
-Faire des traductions françaises des messages envoyés par le bot
+Pouvoir régler la langue du bot
