@@ -8,8 +8,8 @@ from discord.ext import commands
 class FindWord(commands.Cog):
 
     def __init__(self, bot):
-        self.bot = bot
         ############### CONSTANT POULE ###############
+        self.bot = bot
         self._channelPrefix = 'findword-'
         self._languages = ["fr", "en"]
         with open('Dictionnaries.json', "r", encoding="utf-8") as read_file:
