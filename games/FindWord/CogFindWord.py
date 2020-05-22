@@ -10,7 +10,7 @@ class FindWord(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         ############### CONSTANT POULE ###############
-        self._channelPrefix = 'FindWord-'
+        self._channelPrefix = 'findword-'
         self._languages = ["fr", "en"]
         with open('Dictionnaries.json', "r", encoding="utf-8") as read_file:
             self._dictionnaries = json.load(read_file)
@@ -133,8 +133,8 @@ class FindWord(commands.Cog):
         if self.isAdmin(ctx.author):
             arg = int(arg)
             if arg <= 50 and arg >=1:
-                channels = getChannelNamesList(ctx.guild)
-                i = getMaxChannel(channels)
+                channels = self.getChannelNamesList(ctx.guild)
+                i = self.getMaxChannel(channels)
                 for _ in range(arg):
                     await ctx.guild.create_text_channel(self._channelPrefix + str(i))
                     i += 1
@@ -151,8 +151,8 @@ class FindWord(commands.Cog):
         if self.isAdmin(ctx.author):
             arg = int(arg)
             if arg <= 50 and arg >=1:
-                channels = getChannelNamesList(ctx.guild)
-                i = getMaxChannel(channels) - 1
+                channels = self.getChannelNamesList(ctx.guild)
+                i = self.getMaxChannel(channels) - 1
                 for _ in range(arg):
                     for channel in ctx.guild.text_channels:
                         if self._channelPrefix + str(i) == channel.name:
