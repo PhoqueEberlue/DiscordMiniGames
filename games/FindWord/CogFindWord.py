@@ -177,7 +177,7 @@ class FindWord(commands.Cog):
 
     ################ PARTY RELATED ################
     @commands.command()
-    async def party(self, ctx: commands.Context):
+    async def findword(self, ctx: commands.Context):
         """
         parameter: ctx, the context where the command is called
         This command check if the TextChannel where it is called starts with the _channelPrefix then create a party message if it is true
@@ -190,7 +190,7 @@ class FindWord(commands.Cog):
             await partyMessage.add_reaction("✅")
 
     @commands.command()
-    async def play(self, ctx: commands.Context):
+    async def playfindword(self, ctx: commands.Context):
         """
         parameter: self, ctx
         The game itself, this function is absolutely massive and could be simplified for sure

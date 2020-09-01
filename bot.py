@@ -43,6 +43,6 @@ async def refresh(ctx: commands.Context, extension):
 for rep in os.listdir('./games'):
     for file_name in os.listdir('./games/' + rep):
         if file_name.startswith('Cog') and file_name.endswith('.py'):
-            bot.load_extension(f'games.{rep}.{file_name[:-3]}') #Deletes the ".py" at the end of the filename
+            bot.load_extension(f'games.{rep}.{file_name[:-3]}')
 
 bot.run(getToken())

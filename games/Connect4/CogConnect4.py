@@ -1,6 +1,6 @@
 from discord.ext import commands
 
-class BombParty(commands.Cog):
+class Connect4(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
@@ -12,7 +12,7 @@ class BombParty(commands.Cog):
         await partyMessage.add_reaction("✅")
 
     @commands.command()
-    async def playPower4(self, ctx: commands.Context):
+    async def playpower4(self, ctx: commands.Context):
         reac = None
         players = []
         async for message in ctx.channel.history(limit=100):
