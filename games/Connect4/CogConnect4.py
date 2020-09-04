@@ -31,4 +31,4 @@ class Connect4(commands.Cog):
             pass
 
 def setup(bot):
-    bot.add_cog(BombParty(bot))   
+    bot.add_cog(Connect4(bot))   

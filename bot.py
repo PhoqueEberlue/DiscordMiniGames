@@ -17,7 +17,7 @@ async def load(ctx: commands.Context, extension):
     if ctx.author.id == 205434999888019456:
         try:
             bot.load_extension(f'games.{extension}.Cog{extension}')
-            await ctx.send(f'Le module {extension} à été load')
+            await ctx.send(f'{extension} module has been loaded')
         except ModuleNotFoundError as error:
             await ctx.send(error)
 
@@ -26,7 +26,7 @@ async def unload(ctx: commands.Context, extension):
     if ctx.author.id == 205434999888019456:
         try:
             bot.unload_extension(f'games.{extension}.Cog{extension}')
-            await ctx.send(f'Le module {extension} à été unload')
+            await ctx.send(f'{extension} module has been unloaded')
         except commands.errors.ExtensionNotLoaded as error:
             await ctx.send(error)
             
@@ -35,7 +35,9 @@ async def refresh(ctx: commands.Context, extension):
     if ctx.author.id == 205434999888019456:
         try:
             bot.unload_extension(f'games.{extension}.Cog{extension}')
-            await load(ctx, extension)
+            bot.load_extension(f'games.{extension}.Cog{extension}')
+            await ctx.send(f'{extension} module has been refreshed')
+            #await load(ctx, extension)
         except commands.errors.ExtensionNotLoaded as error:
             await ctx.send(error)
 
