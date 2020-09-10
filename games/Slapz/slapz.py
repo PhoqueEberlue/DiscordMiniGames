@@ -8,11 +8,19 @@ class slapz:
 
     def __init__(self, players):
         self._players = players
+        self._playerTurn = 0
     
-    def main():
+    def main(self):
         pass
 
-    def characterGen():
+    def nextPlayer(self):
+        if len(self._players) - 1 == self._playerTurn: 
+            self._playerTurn = 0
+        else:
+            self._playerTurn += 1
+
+
+    def characterGen(self):
         for user in self._players:
             UserId = user.id
             if not path.exists(f"{UserId}.png"):
