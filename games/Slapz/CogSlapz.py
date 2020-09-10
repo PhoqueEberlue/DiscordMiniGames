@@ -30,7 +30,17 @@ class Slapz(commands.Cog):
                 #strPlayerList += f' {user.mention} |'
                 
         #msg = await client.wait_for('message', check=lambda message: message.author == ctx.author)
+        '''
+        from asyncio import TimeoutError
+        @client.command()
+        async def test(ctx: commands.Context):
+            try:
+                msg = await client.wait_for('message', check=lambda message: message.author == ctx.author, timeout=5)
+                await ctx.send(msg.content)
+            except TimeoutError:
+                await ctx.send('timeout')
         game = slapz(players)
+        '''
         '''
         end = False
         while(not end):
