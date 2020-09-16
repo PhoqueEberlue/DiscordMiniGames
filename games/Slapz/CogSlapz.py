@@ -1,6 +1,7 @@
 from discord.ext import commands
 import discord
 from .slapz import slapz
+from .player import player
 from asyncio import TimeoutError
 
 class Slapz(commands.Cog):
@@ -25,16 +26,15 @@ class Slapz(commands.Cog):
                 break
         async for user in reac.users():
             if user != self.bot.user:
-                players.append(user)
+                players.append(player(user))
                 #await ctx.send(user.avatar_url)
                 #players.appendPlayer(Player(user))
                 #strPlayerList += f' {user.mention} |'
-                
-        
-        @client.command()
-        async def test(ctx: commands.Context):
+        game = slapz(players)
+        while(!game.getEnd()):
+            currentPlayer = game.nextPlayer()
             try:
-                msg = await client.wait_for('message', check=lambda message: message.author == ctx.author and ctx.channel == message.channel, timeout=5)
+                msg = await client.wait_for('message', check=lambda message: message.author == currentPlayer.getUser() and ctx.channel == message.channel, timeout=5)
                 await ctx.send(msg.content)
             except TimeoutError:
                 await ctx.send('timeout')

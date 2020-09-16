@@ -3,12 +3,14 @@ from PIL import Image
 import requests
 import os.path
 from os import path
+from random import randint
 
 class slapz:
 
     def __init__(self, players):
         self._players = players
-        self._playerTurn = 0
+        self._playerTurn = randint(0, len(self._players)-1) 
+        self._end = False
     
     def main(self):
         pass
@@ -18,7 +20,13 @@ class slapz:
             self._playerTurn = 0
         else:
             self._playerTurn += 1
+        return self._players[self._playerTurn]
 
+    def endGame(self):
+        self._end = True
+
+    def getEnd(self):
+        return self._end
 
     def characterGen(self):
         for user in self._players:
