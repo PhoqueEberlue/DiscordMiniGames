@@ -31,10 +31,10 @@ class Slapz(commands.Cog):
                 #players.appendPlayer(Player(user))
                 #strPlayerList += f' {user.mention} |'
         game = slapz(players)
-        while(!game.getEnd()):
+        while(not game.getEnd()):
             currentPlayer = game.nextPlayer()
             try:
-                msg = await client.wait_for('message', check=lambda message: message.author == currentPlayer.getUser() and ctx.channel == message.channel, timeout=5)
+                msg = await self.bot.wait_for('message', check=lambda message: message.author == currentPlayer.getUser() and ctx.channel == message.channel, timeout=5)
                 await ctx.send(msg.content)
             except TimeoutError:
                 await ctx.send('timeout')
