@@ -24,25 +24,22 @@ class Slapz(commands.Cog):
             if message.author == self.bot.user and message.content == self._createMsg:
                 reac = message.reactions[0]
                 break
+        strPlayerList = ''
         async for user in reac.users():
             if user != self.bot.user:
                 players.append(player(user))
-                #await ctx.send(user.avatar_url)
-                #players.appendPlayer(Player(user))
-                #strPlayerList += f' {user.mention} |'
+                strPlayerList += f' {user.mention} |'
         game = slapz(players)
         while(not game.getEnd()):
             currentPlayer = game.nextPlayer()
+            await ctx.send(f'{currentPlayer.getUser().mention}\'s turn')
+            await ctx.send(f'Inventory: {currentPlayer.getInventory()}, HP: {currentPlayer.getHp()}')
+            await ctx.send('Chose your action: Move or Pass')
             try:
-                msg = await self.bot.wait_for('message', check=lambda message: message.author == currentPlayer.getUser() and ctx.channel == message.channel, timeout=5)
-                await ctx.send(msg.content)
+                msg = await self.bot.wait_for('message', check=lambda message: message.author == currentPlayer.getUser() and ctx.channel == message.channel, timeout=10)
             except TimeoutError:
                 await ctx.send('timeout')
-        '''
-        end = False
-        while(not end):
-            pass
-        '''
+            
 
 def setup(bot):
     bot.add_cog(Slapz(bot))

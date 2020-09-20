@@ -4,12 +4,15 @@ import requests
 import os.path
 from os import path
 from random import randint
+from random import random
+from random import choice
 
 class slapz:
 
     def __init__(self, players):
         self._players = players
-        self._playerTurn = randint(0, len(self._players)-1) 
+        self._playerTurn = randint(0, len(self._players)-1)
+        self._fightCoef = 0.2
         self._end = False
     
     def main(self):
@@ -22,6 +25,17 @@ class slapz:
             self._playerTurn += 1
         return self._players[self._playerTurn]
 
+    def Move(self, player):
+        if random() > self._fightCoef:
+            pass
+            #fight
+        else:
+            pass
+            #loot
+            
+    def getRandomUser(self):
+        return choice(self._players)
+    
     def endGame(self):
         self._end = True
 
