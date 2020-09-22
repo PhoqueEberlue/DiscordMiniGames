@@ -1,8 +1,9 @@
 class item:
-    def __init__(self, name, dmg, effect):
+    def __init__(self, name, dmg, effect, lootprob):
         self._name = name
         self._dmg = dmg
         self._effect = effect
+        self._lootprob = lootprob
     
     #GETTERS  
     def getName(self):
@@ -13,6 +14,9 @@ class item:
     
     def getEffect(self):
         return self._effect
+    
+    def getLootProb(self):
+        return self._lootprob
     
     #SETTERS
     def setDmg(self, dmg):

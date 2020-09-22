@@ -15,6 +15,8 @@ class player:
     def getInventory(self):
         return self._inventory
     
+    def full(self):
+        return self._inventory >= 2
     #SETTERS
     def setHp(self, hp):
         self._hp = hp
@@ -27,8 +29,7 @@ class player:
         self._inventory.remove(item)
 
     def addInventory(self, item):
-        if len(self._inventory) < 2:
-            self._inventory.append(item)
+        self._inventory.append(item)
 
     def removeInventory(self, position):
         self._inventory.pop(position)

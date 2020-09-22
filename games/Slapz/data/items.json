@@ -1,0 +1,14 @@
+[
+    {
+        "name": "PoissonExemple",
+        "dmg": 20,
+        "effects": "No",
+        "lootprob": 0.8
+    },
+    {
+        "name": "Poisson sanguin",
+        "dmg": [10,20],
+        "effects": "Sustain",
+        "lootprob": 0.1
+    }
+]

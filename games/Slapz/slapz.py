@@ -6,6 +6,9 @@ from os import path
 from random import randint
 from random import random
 from random import choice
+import json
+from .item import item
+from .player import player
 
 class slapz:
 
@@ -14,7 +17,20 @@ class slapz:
         self._playerTurn = randint(0, len(self._players)-1)
         self._fightCoef = 0.2
         self._end = False
+        self._items = self.loadItems()
     
+    def loadItems(self):
+        itemsClass = []
+        temp = []
+        with open("./data.items.json") as items:
+            temp = items
+        for i in items:
+            if type(item["dmg"])== list:
+                itemsClass.append(item(item["name"], randint(item["dmg"][0],item["dmg"][1]), item["effect"], item["lootprob"]))
+            else:
+                itemsClass.append(item(item["name"], item["dmg"], item["effect"], item["lootprob"]))
+        return itemsClass
+        
     def main(self):
         pass
 
@@ -30,9 +46,19 @@ class slapz:
             pass
             #fight
         else:
-            pass
+            if not player.full():
+                player.addInventory(self.loot())
+            else:
+                pass
+                #INVENTORY FULL
             #loot
-            
+    
+    def loot(self):
+        weights = ()
+        for item in self._items:
+            weights += (item.getLootProb(),)
+        return choice(self._items, cum_weights=weights, k=1)[0]
+
     def getRandomUser(self):
         return choice(self._players)
     
