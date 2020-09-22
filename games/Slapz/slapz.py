@@ -25,14 +25,11 @@ class slapz:
         with open("./data.items.json") as items:
             temp = items
         for i in items:
-            if type(item["dmg"])== list:
+            if type(item["dmg"]) == list:
                 itemsClass.append(item(item["name"], randint(item["dmg"][0],item["dmg"][1]), item["effect"], item["lootprob"]))
             else:
                 itemsClass.append(item(item["name"], item["dmg"], item["effect"], item["lootprob"]))
         return itemsClass
-        
-    def main(self):
-        pass
 
     def nextPlayer(self):
         if len(self._players) - 1 == self._playerTurn: 
