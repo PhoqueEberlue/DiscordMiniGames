@@ -3,6 +3,7 @@ import discord
 from .slapz import slapz
 from .player import player
 from asyncio import TimeoutError
+from random import choice
 
 class Slapz(commands.Cog):
 
@@ -34,11 +35,24 @@ class Slapz(commands.Cog):
             currentPlayer = game.nextPlayer()
             await ctx.send(f'{currentPlayer.getUser().mention}\'s turn')
             await ctx.send(f'Inventory: {currentPlayer.getInventory()}, HP: {currentPlayer.getHp()}')
-            await ctx.send('Chose your action: Move or Pass')
+            await ctx.send('Chose your action: move or pass')
+            command = ""
             try:
                 msg = await self.bot.wait_for('message', check=lambda message: message.author == currentPlayer.getUser() and ctx.channel == message.channel, timeout=10)
+                command = msg.content
             except TimeoutError:
-                await ctx.send('timeout')
+                command = choice(["m", "p"])
+            if command in ["move", "m", "1"]:
+                action = game.Move(currentPlayer)
+                if action[0] == "fight":
+                    game.fight(action[1])
+                if action[0] == "loot":
+                    await ctx.send(f'you looted {action[1]}')
+                if action[0] == "full":
+                    await ctx.send("your inventory is full")
+            elif command in ["pass", "p", "2"]:
+                pass
+                
             
 
 def setup(bot):

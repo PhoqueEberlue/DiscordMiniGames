@@ -22,7 +22,7 @@ class slapz:
     def loadItems(self):
         itemsClass = []
         temp = []
-        with open("./data.items.json") as items:
+        with open(".games/Slapz/data/items.json") as items:
             temp = items
         for i in items:
             if type(item["dmg"]) == list:
@@ -40,15 +40,19 @@ class slapz:
 
     def Move(self, player):
         if random() > self._fightCoef:
-            pass
-            #fight
+            players = self._players.remove(player)
+            opponent = choice(players)
+            return ("fight", opponent)
         else:
             if not player.full():
-                player.addInventory(self.loot())
+                item = self.loot()
+                player.addInventory(item)
+                return ("loot", item)
             else:
-                pass
-                #INVENTORY FULL
-            #loot
+                return ("full", None)
+            
+    def fight(self, opponent):
+        pass
     
     def loot(self):
         weights = ()
