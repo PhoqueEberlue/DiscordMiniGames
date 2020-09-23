@@ -30,30 +30,36 @@ class Slapz(commands.Cog):
             if user != self.bot.user:
                 players.append(player(user))
                 strPlayerList += f' {user.mention} |'
-        game = slapz(players)
-        while(not game.getEnd()):
-            currentPlayer = game.nextPlayer()
-            await ctx.send(f'{currentPlayer.getUser().mention}\'s turn')
-            await ctx.send(f'Inventory: {currentPlayer.getInventory()}, HP: {currentPlayer.getHp()}')
-            await ctx.send('Chose your action: move or pass')
-            command = ""
-            try:
-                msg = await self.bot.wait_for('message', check=lambda message: message.author == currentPlayer.getUser() and ctx.channel == message.channel, timeout=10)
-                command = msg.content
-            except TimeoutError:
-                command = choice(["m", "p"])
-            if command in ["move", "m", "1"]:
-                action = game.Move(currentPlayer)
-                if action[0] == "fight":
-                    game.fight(action[1])
-                if action[0] == "loot":
-                    await ctx.send(f'you looted {action[1]}')
-                if action[0] == "full":
-                    await ctx.send("your inventory is full")
-            elif command in ["pass", "p", "2"]:
-                pass
-                
+        if len(players) < 2:
+            await ctx.send('not enough players')
+        else:            
+            game = slapz(players)
+            while(not game.getEnd()):
+                currentPlayer = game.nextPlayer()
+                await ctx.send(f'{currentPlayer.getUser().mention}\'s turn \nInventory: {currentPlayer.getInventory()}, HP: {currentPlayer.getHp()}\nChose your action: move or pass')
+                command = ""
+                msg = self.waitmsg(ctx, currentPlayer)
+                if msg == "timeout":
+                    msg = choice(["m", "p"])
+                #await msg.delete()
+                if msg in ["move", "m", "1"]:
+                    action = game.Move(currentPlayer)
+                    if action[0] == "fight":
+                        game.fight(action[1])
+                    if action[0] == "loot":
+                        await ctx.send(f'you looted {action[1]}')
+                    if action[0] == "full":
+                        await ctx.send("your inventory is full")
+                elif msg in ["pass", "p", "2"]:
+                    pass
+            await ctx.send(game.getWinner())
             
-
+    @commands.command()
+    async def waitmsg(self, ctx, player):
+        try:
+            msg = await self.bot.wait_for('message', check=lambda message: message.author == player.getUser() and ctx.channel == message.channel, timeout=10)
+            return msg.content
+        except TimeoutError:
+            return "timeout"
 def setup(bot):
     bot.add_cog(Slapz(bot))

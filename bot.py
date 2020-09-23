@@ -34,8 +34,7 @@ async def unload(ctx: commands.Context, extension):
 async def refresh(ctx: commands.Context, extension):
     if ctx.author.id == 205434999888019456:
         try:
-            bot.unload_extension(f'games.{extension}.Cog{extension}')
-            bot.load_extension(f'games.{extension}.Cog{extension}')
+            bot.reload_extension(f'games.{extension}.Cog{extension}')
             await ctx.send(f'{extension} module has been refreshed')
             #await load(ctx, extension)
         except commands.errors.ExtensionNotLoaded as error:

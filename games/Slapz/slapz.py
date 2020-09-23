@@ -22,13 +22,13 @@ class slapz:
     def loadItems(self):
         itemsClass = []
         temp = []
-        with open(".games/Slapz/data/items.json") as items:
-            temp = items
-        for i in items:
-            if type(item["dmg"]) == list:
-                itemsClass.append(item(item["name"], randint(item["dmg"][0],item["dmg"][1]), item["effect"], item["lootprob"]))
+        with open("./games/Slapz/data/items.json") as items:
+            temp = json.load(items)
+        for i in temp:
+            if isinstance(i["dmg"], list):
+                itemsClass.append(item(i["name"], randint(i["dmg"][0],i["dmg"][1]), i["effects"], i["lootprob"]))
             else:
-                itemsClass.append(item(item["name"], item["dmg"], item["effect"], item["lootprob"]))
+                itemsClass.append(item(i["name"], i["dmg"], i["effects"], i["lootprob"]))
         return itemsClass
 
     def nextPlayer(self):
@@ -68,6 +68,9 @@ class slapz:
 
     def getEnd(self):
         return self._end
+    
+    def getWinner(self):
+        return self._players[0]
 
     def characterGen(self):
         for user in self._players:
