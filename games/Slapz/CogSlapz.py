@@ -38,7 +38,7 @@ class Slapz(commands.Cog):
                 currentPlayer = game.nextPlayer()
                 await ctx.send(f'{currentPlayer.getUser().mention}\'s turn \nInventory: {currentPlayer.getInventory()}, HP: {currentPlayer.getHp()}\nChose your action: move or pass')
                 command = ""
-                msg = self.waitmsg(ctx, currentPlayer)
+                msg = await self.waitmsg(ctx, currentPlayer)
                 if msg == "timeout":
                     msg = choice(["m", "p"])
                 #await msg.delete()
