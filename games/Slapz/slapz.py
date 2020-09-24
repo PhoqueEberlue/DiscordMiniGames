@@ -1,74 +1,81 @@
-import discord
 from PIL import Image
 import requests
-import os.path
 from os import path
-from random import randint
-from random import random
+from random import randint, choices
 from random import choice
+from random import random
 import json
-from .item import item
-from .player import player
+from .item import Item
 
-class slapz:
+
+def loadItems():
+    itemsClass = []
+    with open("./games/Slapz/data/items.json") as items:
+        temp = json.load(items)
+    for i in temp:
+        if isinstance(i["dmg"], list):
+            itemsClass.append(Item(i["name"], randint(i["dmg"][0], i["dmg"][1]), i["effects"], i["lootprob"]))
+        else:
+            itemsClass.append(Item(i["name"], i["dmg"], i["effects"], i["lootprob"]))
+    return itemsClass
+
+
+class Slapz:
 
     def __init__(self, players):
         self._players = players
-        self._playerTurn = randint(0, len(self._players)-1)
+        self._playerTurn = randint(0, len(self._players) - 1)
         self._fightCoef = 0.2
+        self._counter = 0
         self._end = False
-        self._items = self.loadItems()
-    
-    def loadItems(self):
-        itemsClass = []
-        temp = []
-        with open("./games/Slapz/data/items.json") as items:
-            temp = json.load(items)
-        for i in temp:
-            if isinstance(i["dmg"], list):
-                itemsClass.append(item(i["name"], randint(i["dmg"][0],i["dmg"][1]), i["effects"], i["lootprob"]))
-            else:
-                itemsClass.append(item(i["name"], i["dmg"], i["effects"], i["lootprob"]))
-        return itemsClass
+        self._items = loadItems()
 
     def nextPlayer(self):
-        if len(self._players) - 1 == self._playerTurn: 
+        if len(self._players) - 1 == self._playerTurn:
             self._playerTurn = 0
         else:
             self._playerTurn += 1
         return self._players[self._playerTurn]
 
     def Move(self, player):
-        if random() > self._fightCoef:
-            players = self._players.remove(player)
-            opponent = choice(players)
-            return ("fight", opponent)
+        if random() < self._fightCoef:
+            p = self._players.copy()
+            p.remove(player)
+            print(self._players)
+            opponent = choice(p)
+            return "fight", opponent
         else:
             if not player.full():
                 item = self.loot()
                 player.addInventory(item)
-                return ("loot", item)
+                return "loot", item
             else:
-                return ("full", None)
-            
+                return "full", None
+
     def fight(self, opponent):
         pass
-    
+
     def loot(self):
         weights = ()
         for item in self._items:
             weights += (item.getLootProb(),)
-        return choice(self._items, cum_weights=weights, k=1)[0]
+        return choices(self._items, cum_weights=weights, k=1)[0]
 
     def getRandomUser(self):
         return choice(self._players)
-    
+
+    def updateCoef(self):
+        if self._fightCoef < 1.0:
+            self._counter += 1
+            if self._counter > len(self._players):
+                self._fightCoef += 0.05
+
     def endGame(self):
         self._end = True
 
     def getEnd(self):
         return self._end
-    
+
     def getWinner(self):
         return self._players[0]
 
@@ -81,9 +88,9 @@ class slapz:
                 file.write(response.content)
                 file.close()
                 im = Image.open(f"{UserId}.webp").convert("RGBA")
-                new_im = im.resize((128,128))
+                new_im = im.resize((128, 128))
                 bg = Image.open("./games/Slapz/img/background.png")
-                bg.paste(new_im, (181,181), new_im)
+                bg.paste(new_im, (181, 181), new_im)
                 ch = Image.open("./games/Slapz/img/character.png")
-                bg.paste(ch, (0,0), ch)
+                bg.paste(ch, (0, 0), ch)
                 bg.save(f"./games/Slapz/CharactersGenerations/{UserId}.png", "png")

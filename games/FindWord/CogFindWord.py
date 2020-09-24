@@ -5,7 +5,7 @@ from .PlayerList import PlayerList
 from .Player import Player
 from discord.ext import commands
 
-class FindWord(commands.Cog):
+class CogFindWord(commands.Cog):
 
     def __init__(self, bot):
         ############### CONSTANT POULE ###############
@@ -256,4 +256,4 @@ class FindWord(commands.Cog):
     ############# ENDOF PARTY RELATED #############
 
 def setup(bot):
-    bot.add_cog(FindWord(bot))
+    bot.add_cog(CogFindWord(bot))

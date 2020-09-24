@@ -1,27 +1,28 @@
-class player:
-    
+class Player:
+
     def __init__(self, user):
         self._user = user
         self._hp = 100
         self._inventory = []
-    
-    #GETTERS
+
+    # GETTERS
     def getUser(self):
         return self._user
-    
+
     def getHp(self):
         return self._hp
-    
+
     def getInventory(self):
         return self._inventory
-    
+
     def full(self):
-        return self._inventory >= 2
-    #SETTERS
+        return len(self._inventory) >= 2
+
+    # SETTERS
     def setHp(self, hp):
         self._hp = hp
 
-    #ACTIONS        
+    # ACTIONS
     def eat(self, item):
         self._hp += item.getDmg()
         if self._hp > 100:

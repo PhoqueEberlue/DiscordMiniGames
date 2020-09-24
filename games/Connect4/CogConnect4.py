@@ -1,6 +1,7 @@
 from discord.ext import commands
 
-class Connect4(commands.Cog):
+
+class CogConnect4(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
@@ -16,7 +17,7 @@ class Connect4(commands.Cog):
         reac = None
         players = []
         async for message in ctx.channel.history(limit=100):
-            if message.author == bot.user:
+            if message.author == self.bot.user:
                 reac = message.reactions[0]
                 break
         try:
@@ -27,8 +28,9 @@ class Connect4(commands.Cog):
             await ctx.send("frero y'a pas de joueurs qu'est-ce que tu fait là ?")
         await ctx.send(f'joueur 1 : {players[0].mention} joueur 2 : {players[1].mention}')
         end = False
-        while(not end):
+        while (not end):
             pass
 
+
 def setup(bot):
-    bot.add_cog(Connect4(bot))   
+    bot.add_cog(CogConnect4(bot))
