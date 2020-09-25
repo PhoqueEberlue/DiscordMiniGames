@@ -1,8 +1,7 @@
 from PIL import Image
 import requests
 from os import path
-from random import randint, choices
-from random import choice
+from random import randint, choices, choice
 from random import random
 import json
 from .item import Item
@@ -27,7 +26,6 @@ class Slapz:
         self._playerTurn = randint(0, len(self._players) - 1)
         self._fightCoef = 0.2
         self._counter = 0
-        self._end = False
         self._items = loadItems()
 
     def nextPlayer(self):
@@ -41,7 +39,6 @@ class Slapz:
         if random() < self._fightCoef:
             p = self._players.copy()
             p.remove(player)
-            print(self._players)
             opponent = choice(p)
             return "fight", opponent
         else:
@@ -67,14 +64,15 @@ class Slapz:
     def updateCoef(self):
         if self._fightCoef < 1.0:
             self._counter += 1
-            if self._counter > len(self._players):
+            if self._counter > len(self._players)-1:
                 self._fightCoef += 0.05
-
-    def endGame(self):
-        self._end = True
+                self._counter = 0
 
     def getEnd(self):
-        return self._end
+        if len(self._players) == 1:
+            return True
+        else:
+            return False
 
     def getWinner(self):
         return self._players[0]

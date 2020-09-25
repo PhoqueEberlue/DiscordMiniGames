@@ -26,17 +26,19 @@ class CogSlapz(commands.Cog):
                 reac = message.reactions[0]
                 break
         strPlayerList = ''
-        async for user in reac.users():
-            if user != self.bot.user:
-                players.append(Player(user))
-                strPlayerList += f' {user.mention} |'
+        if reac is not None:
+            async for user in reac.users():
+                if user != self.bot.user:
+                    players.append(Player(user))
+                    strPlayerList += f' {user.mention} |'
         if len(players) < 2:
             await ctx.send('not enough players')
         else:
             game = Slapz(players)
             while not game.getEnd():
                 currentPlayer = game.nextPlayer()
-                await ctx.send(f'{currentPlayer.getUser().mention}\'s turn \nInventory: {currentPlayer.getInventory()}, HP: {currentPlayer.getHp()}\nChose your action: move or pass')
+                await ctx.send(
+                    f'{currentPlayer.getUser().mention}\'s turn \nInventory: {currentPlayer.getInventory()}, HP: {currentPlayer.getHp()}\nChose your action: move or pass')
                 msg = await self.waitmsg(ctx, currentPlayer)
                 if msg == "timeout":
                     msg = choice(["m", "p"])
@@ -56,7 +58,8 @@ class CogSlapz(commands.Cog):
 
     async def waitmsg(self, ctx, player):
         try:
-            msg = await self.bot.wait_for('message', check=lambda message: message.author == player.getUser() and ctx.channel == message.channel, timeout=15)
+            msg = await self.bot.wait_for('message', check=lambda
+                message: message.author == player.getUser() and ctx.channel == message.channel, timeout=15)
             return msg.content
         except TimeoutError:
             return "timeout"
