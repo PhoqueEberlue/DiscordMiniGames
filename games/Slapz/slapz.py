@@ -6,7 +6,9 @@ from random import random
 import json
 from .item import Item
 
-
+#TODO
+#fix les système d'item, par exemple la génarations d'item random est nulle
+#on pourrait faire des classe qui extends item pour gérer les effets des items, ça serait bien mieux
 def loadItems():
     itemsClass = []
     with open("./games/Slapz/data/items.json") as items:
@@ -69,10 +71,13 @@ class Slapz:
                 self._counter = 0
 
     def getEnd(self):
-        if len(self._players) == 1:
+        if len(self._players) <= 1:
             return True
         else:
             return False
+
+    def removePLayer(self, player):
+        self._players.remove(player)
 
     def getWinner(self):
         return self._players[0]

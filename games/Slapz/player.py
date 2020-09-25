@@ -23,14 +23,25 @@ class Player:
         self._hp = hp
 
     # ACTIONS
-    def eat(self, item):
-        self._hp += item.getDmg()
-        if self._hp > 100:
-            self._hp = 100
-        self._inventory.remove(item)
+    def eat(self):
+        if len(self._inventory) == 0:
+            pass
+        else:
+            self._hp += self._inventory[0].getDmg()
+            if self._hp > 100:
+                self._hp = 100
+            self._inventory.remove(self._inventory[0])
+
+    def attack(self, opponent):
+        hp = opponent.getHp() - self._inventory[0].getDmg()
+        opponent.setHp(hp)
+        return hp
 
     def addInventory(self, item):
         self._inventory.append(item)
 
     def removeInventory(self, position):
         self._inventory.pop(position)
+
+    def __repr__(self):
+        return f'{self._user.mention}'

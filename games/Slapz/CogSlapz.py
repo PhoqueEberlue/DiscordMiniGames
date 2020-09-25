@@ -45,8 +45,23 @@ class CogSlapz(commands.Cog):
                 if msg in ["move", "m", "1"]:
                     action = game.Move(currentPlayer)
                     if action[0] == "fight":
-                        game.fight(action[1])
-                        await ctx.send('fight')
+                        #game.fight(action[1])
+                        await ctx.send(f'{currentPlayer} vs {action[1]}\nChose your action: attack or eat')
+                        fightmsg = await self.waitmsg(ctx, currentPlayer)
+                        if fightmsg == "timeout":
+                            fightmsg = choice(["a", "e"])
+                        if fightmsg in ["attack", "a", "1"]:
+                            await ctx.send(currentPlayer.attack(action[1]))
+                            if action[1].getHp() <= 0:
+                                game.removePLayer(action[1])
+                                await ctx.send(f'{action[1]} was eliminated by {currentPlayer}')
+                            else:
+                                await ctx.send(action[1].attack(currentPlayer))
+                                if currentPlayer.getHp() <= 0:
+                                    game.removePLayer(currentPlayer)
+                                    await ctx.send(f'{currentPlayer} was eliminated by {action[1]}')
+                        elif fightmsg in ["eat", "e", "2"]:
+                            currentPlayer.eat()
                     if action[0] == "loot":
                         await ctx.send(f'you looted {action[1]}')
                     if action[0] == "full":
@@ -54,7 +69,7 @@ class CogSlapz(commands.Cog):
                 elif msg in ["pass", "p", "2"]:
                     pass
                 game.updateCoef()
-            await ctx.send(game.getWinner())
+            await ctx.send(f'{game.getWinner().mention} won')
 
     async def waitmsg(self, ctx, player):
         try:
