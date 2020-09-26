@@ -1,5 +1,6 @@
 import discord
-from games.Slapz.item import Item
+from .item import Item
+from typing import List
 
 
 class Player:
@@ -16,7 +17,7 @@ class Player:
     def getHp(self) -> int:
         return self._hp
 
-    def getInventory(self) -> list[Item]:
+    def getInventory(self) -> List[Item]:
         return self._inventory
 
     def full(self) -> bool:

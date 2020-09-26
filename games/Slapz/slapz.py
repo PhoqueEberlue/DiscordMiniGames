@@ -4,12 +4,12 @@ from os import path
 from random import randint, choices, choice
 from random import random
 import json
-
-from games.Slapz.player import Player
+from .player import Player
 from .item import Item
+from typing import List
 
 
-def loadItems() -> list[Item]:
+def loadItems() -> List[Item]:
     itemsClass = []
     with open("./games/Slapz/data/items.json") as items:
         temp = json.load(items)
@@ -20,7 +20,7 @@ def loadItems() -> list[Item]:
 
 class Slapz:
 
-    def __init__(self, players: list[Player]) -> None:
+    def __init__(self, players: List[Player]) -> None:
         self._players = players
         self._playerTurn = randint(0, len(self._players) - 1)
         self._fightCoef = 0.2
