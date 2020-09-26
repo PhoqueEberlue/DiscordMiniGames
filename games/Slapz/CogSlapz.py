@@ -3,22 +3,23 @@ from .slapz import Slapz
 from .player import Player
 from asyncio import TimeoutError
 from random import choice
+import discord
 
 
 class CogSlapz(commands.Cog):
 
-    def __init__(self, bot):
+    def __init__(self, bot: discord.client) -> None:
         self.bot = bot
         self._createMsg = "Click on the reaction to join the Slapz game!"
 
     @commands.command()
-    async def slapz(self, ctx: commands.Context):
+    async def slapz(self, ctx: commands.Context) -> None:
         await ctx.send(self._createMsg)
         partyMessage = ctx.channel.last_message
         await partyMessage.add_reaction("✅")
 
     @commands.command()
-    async def playslapz(self, ctx: commands.Context):
+    async def playslapz(self, ctx: commands.Context) -> None:
         reac = None
         players = []
         async for message in ctx.channel.history(limit=100):
@@ -51,14 +52,14 @@ class CogSlapz(commands.Cog):
                         if fightmsg == "timeout":
                             fightmsg = choice(["a", "e"])
                         if fightmsg in ["attack", "a", "1"]:
-                            await ctx.send(currentPlayer.attack(action[1]))
+                            await ctx.send(f'{currentPlayer.attack(action[1])}')
                             if action[1].getHp() <= 0:
-                                game.removePLayer(action[1])
+                                game.removePlayer(action[1])
                                 await ctx.send(f'{action[1]} was eliminated by {currentPlayer}')
                             else:
                                 await ctx.send(action[1].attack(currentPlayer))
                                 if currentPlayer.getHp() <= 0:
-                                    game.removePLayer(currentPlayer)
+                                    game.removePlayer(currentPlayer)
                                     await ctx.send(f'{currentPlayer} was eliminated by {action[1]}')
                         elif fightmsg in ["eat", "e", "2"]:
                             currentPlayer.eat()
@@ -69,9 +70,10 @@ class CogSlapz(commands.Cog):
                 elif msg in ["pass", "p", "2"]:
                     pass
                 game.updateCoef()
-            await ctx.send(f'{game.getWinner().mention} won')
+            await ctx.send(f'{game.getWinner().getUser().mention} won')
 
-    async def waitmsg(self, ctx, player):
+    @staticmethod
+    async def waitmsg(self, ctx: commands.context, player: Player) -> str:
         try:
             msg = await self.bot.wait_for('message', check=lambda
                 message: message.author == player.getUser() and ctx.channel == message.channel, timeout=15)
@@ -80,5 +82,5 @@ class CogSlapz(commands.Cog):
             return "timeout"
 
 
-def setup(bot):
+def setup(bot: discord.client) -> None:
     bot.add_cog(CogSlapz(bot))

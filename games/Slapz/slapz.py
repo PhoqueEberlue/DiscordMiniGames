@@ -4,40 +4,37 @@ from os import path
 from random import randint, choices, choice
 from random import random
 import json
+
+from games.Slapz.player import Player
 from .item import Item
 
-#TODO
-#fix les système d'item, par exemple la génarations d'item random est nulle
-#on pourrait faire des classe qui extends item pour gérer les effets des items, ça serait bien mieux
-def loadItems():
+
+def loadItems() -> list[Item]:
     itemsClass = []
     with open("./games/Slapz/data/items.json") as items:
         temp = json.load(items)
     for i in temp:
-        if isinstance(i["dmg"], list):
-            itemsClass.append(Item(i["name"], randint(i["dmg"][0], i["dmg"][1]), i["effects"], i["lootprob"]))
-        else:
-            itemsClass.append(Item(i["name"], i["dmg"], i["effects"], i["lootprob"]))
+        itemsClass.append(Item(i["name"], i["dmg"], i["effects"], i["lootprob"]))
     return itemsClass
 
 
 class Slapz:
 
-    def __init__(self, players):
+    def __init__(self, players: list[Player]) -> None:
         self._players = players
         self._playerTurn = randint(0, len(self._players) - 1)
         self._fightCoef = 0.2
         self._counter = 0
         self._items = loadItems()
 
-    def nextPlayer(self):
+    def nextPlayer(self) -> Player:
         if len(self._players) - 1 == self._playerTurn:
             self._playerTurn = 0
         else:
             self._playerTurn += 1
         return self._players[self._playerTurn]
 
-    def Move(self, player):
+    def Move(self, player: Player) -> tuple:
         if random() < self._fightCoef:
             p = self._players.copy()
             p.remove(player)
@@ -51,42 +48,45 @@ class Slapz:
             else:
                 return "full", None
 
-    def fight(self, opponent):
+    def fight(self, opponent: Player) -> None:
         pass
 
-    def loot(self):
+    def loot(self) -> Item:
         weights = ()
         for item in self._items:
             weights += (item.getLootProb(),)
-        return choices(self._items, cum_weights=weights, k=1)[0]
+        res = choices(self._items, cum_weights=weights, k=1)[0].copy()
+        if isinstance(res.getDmg(), list):
+            res.setDmg(randint(res.getDmg()[0], res.getDmg()[1]))
+        return res
 
-    def getRandomUser(self):
+    def getRandomUser(self) -> Player:
         return choice(self._players)
 
-    def updateCoef(self):
+    def updateCoef(self) -> None:
         if self._fightCoef < 1.0:
             self._counter += 1
-            if self._counter > len(self._players)-1:
+            if self._counter > len(self._players) - 1:
                 self._fightCoef += 0.05
                 self._counter = 0
 
-    def getEnd(self):
+    def getEnd(self) -> bool:
         if len(self._players) <= 1:
             return True
         else:
             return False
 
-    def removePLayer(self, player):
+    def removePlayer(self, player: Player) -> None:
         self._players.remove(player)
 
-    def getWinner(self):
+    def getWinner(self) -> Player:
         return self._players[0]
 
     def characterGen(self):
-        for user in self._players:
-            UserId = user.id
+        for player in self._players:
+            UserId = player.getUser().id
             if not path.exists(f"{UserId}.png"):
-                response = requests.get(f"{user.avatar_url}")
+                response = requests.get(f"{player.avatar_url}")
                 file = open(f"{UserId}.webp", "wb")
                 file.write(response.content)
                 file.close()

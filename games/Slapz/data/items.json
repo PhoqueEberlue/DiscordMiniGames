@@ -15,49 +15,49 @@
         "name": "BearSlapz",
         "dmg": 50,
         "effects": "HitnGO",
-        "lootprob": 12
+        "lootprob": 12.0
     },
     {
         "name": "RequinVorace",
         "dmg": 70,
         "effects": "Sustain",
-        "lootprob": 2
+        "lootprob": 2.0
     },
     {
         "name": "Train",
         "dmg": 20000,
         "effects": "Train",
-        "lootprob": 1 
+        "lootprob": 1.0
     },
     {
         "name": "FailleDimensionelleDePoche",
         "dmg": 0,
         "effects": "DuelAuChoix",
-        "lootprob": 12
+        "lootprob": 12.0
     },
     {
         "name": "ReverseCard",
         "dmg": 0,
         "effects": "ReverseCard",
-        "lootprob": 5
+        "lootprob": 5.0
     },
     {
         "name": "Poissons",
         "dmg": [2,150],
         "effects": "Quedalle",
-        "lootprob": 70
+        "lootprob": 70.0
     },
     {
         "name": "IDOLEDUSAINTTINH",
         "dmg": 0,
         "effects": "Sushi",
-        "lootprob": 1
+        "lootprob": 1.0
     },
     {
         "name": "PoulpeTactique",
         "dmg": 0,
         "effects": "VoleDarme",
-        "lootprob": 4
+        "lootprob": 4.0
     },
     {
         "name": "Phoqueéberlué",

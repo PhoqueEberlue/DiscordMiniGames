@@ -1,27 +1,27 @@
 class Item:
-    def __init__(self, name, dmg, effect, lootprob):
+    def __init__(self, name: str, dmg: int or list[int], effect: str, lootprob: float) -> None:
         self._name = name
         self._dmg = dmg
         self._effect = effect
         self._lootprob = lootprob
 
-    #GETTERS  
-    def getName(self):
+    # GETTERS
+    def getName(self) -> str:
         return self._name
-    
-    def getDmg(self):
+
+    # items can have a fixed amount of dmg or a list of two int. Items inside players inventory will be dmg = random.choice(dmg[0], dmg[1])
+    def getDmg(self) -> int or list[int]:
         return self._dmg
-    
-    def getEffect(self):
+
+    def getEffect(self) -> str:
         return self._effect
-    
-    def getLootProb(self):
+
+    def getLootProb(self) -> float:
         return self._lootprob
-    
-    #SETTERS
-    def setDmg(self, dmg):
+
+    # SETTERS
+    def setDmg(self, dmg: int) -> None:
         self._dmg = dmg
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f'{self._name}, {self._dmg}, {self._effect} |'
-
