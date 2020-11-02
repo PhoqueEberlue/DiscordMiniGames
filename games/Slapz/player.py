@@ -33,12 +33,15 @@ class Player:
             pass
         else:
             self._hp += self._inventory[0].getDmg()
-            if self._hp > 100:
-                self._hp = 100
+            if self._hp > 200:
+                self._hp = 200
             self._inventory.remove(self._inventory[0])
 
     def attack(self, opponent: 'Player') -> int:
-        hp = opponent.getHp() - self._inventory[0].getDmg()
+        try:
+            hp = opponent.getHp() - self._inventory[0].getDmg()
+        except IndexError:  # In case your inventory is empty you still deal 1 dmg
+            hp = opponent.getHp() - 1
         opponent.setHp(hp)
         return hp
 

@@ -16,13 +16,18 @@ async def on_guild_join(self, guild):
 
 
 @bot.command()
+async def ui(ctx: commands.Context):
+    print(ctx.author.id)
+
+
+@bot.command()
 async def load(ctx: commands.Context, extension):
     if ctx.author.id == 205434999888019456:
         try:
             bot.load_extension(f'games.{extension}.Cog{extension}')
             await ctx.send(f'{extension} module has been loaded')
         except ModuleNotFoundError as error:
-            await ctx.send(error)
+            await ctx.send(f'{error}')
 
 
 @bot.command()
@@ -32,7 +37,7 @@ async def unload(ctx: commands.Context, extension):
             bot.unload_extension(f'games.{extension}.Cog{extension}')
             await ctx.send(f'{extension} module has been unloaded')
         except commands.errors.ExtensionNotLoaded as error:
-            await ctx.send(error)
+            await ctx.send(f'{error}')
 
 
 @bot.command()
@@ -41,9 +46,8 @@ async def refresh(ctx: commands.Context, extension):
         try:
             bot.reload_extension(f'games.{extension}.Cog{extension}')
             await ctx.send(f'{extension} module has been refreshed')
-            # await load(ctx, extension)
         except commands.errors.ExtensionNotLoaded as error:
-            await ctx.send(error)
+            await ctx.send(f'{error}')
 
 
 # Loads up every cogs in the ./games file

@@ -39,7 +39,7 @@ class CogSlapz(commands.Cog):
             while not game.getEnd():
                 currentPlayer = game.nextPlayer()
                 await ctx.send(
-                    f'{currentPlayer.getUser().mention}\'s turn \nInventory: {currentPlayer.getInventory()}, HP: {currentPlayer.getHp()}\nChose your action: move or pass')
+                    f'{currentPlayer.getUser().mention}\'s turn \nInventory: {currentPlayer.getInventory()}, HP: {currentPlayer.getHp()}\nChose your action: move or eat')
                 msg = await self.waitmsg(ctx, currentPlayer)
                 if msg == "timeout":
                     msg = choice(["m", "p"])
@@ -63,16 +63,19 @@ class CogSlapz(commands.Cog):
                                     await ctx.send(f'{currentPlayer} was eliminated by {action[1]}')
                         elif fightmsg in ["eat", "e", "2"]:
                             currentPlayer.eat()
+                            await ctx.send(action[1].attack(currentPlayer))
+                            if currentPlayer.getHp() <= 0:
+                                game.removePlayer(currentPlayer)
+                                await ctx.send(f'{currentPlayer} was eliminated by {action[1]}')
                     if action[0] == "loot":
                         await ctx.send(f'you looted {action[1]}')
                     if action[0] == "full":
                         await ctx.send("your inventory is full")
-                elif msg in ["pass", "p", "2"]:
-                    pass
+                elif msg in ["eat", "e", "2"]:
+                    currentPlayer.eat()
                 game.updateCoef()
             await ctx.send(f'{game.getWinner().getUser().mention} won')
 
-    @staticmethod
     async def waitmsg(self, ctx: commands.context, player: Player) -> str:
         try:
             msg = await self.bot.wait_for('message', check=lambda

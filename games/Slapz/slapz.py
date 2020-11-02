@@ -1,3 +1,4 @@
+import copy
 from PIL import Image
 import requests
 from os import path
@@ -55,7 +56,7 @@ class Slapz:
         weights = ()
         for item in self._items:
             weights += (item.getLootProb(),)
-        res = choices(self._items, cum_weights=weights, k=1)[0].copy()
+        res = copy.deepcopy(choices(self._items, cum_weights=weights, k=1)[0])
         if isinstance(res.getDmg(), list):
             res.setDmg(randint(res.getDmg()[0], res.getDmg()[1]))
         return res
@@ -67,7 +68,7 @@ class Slapz:
         if self._fightCoef < 1.0:
             self._counter += 1
             if self._counter > len(self._players) - 1:
-                self._fightCoef += 0.05
+                self._fightCoef += 0.1
                 self._counter = 0
 
     def getEnd(self) -> bool:

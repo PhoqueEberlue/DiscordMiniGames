@@ -1,11 +1,5 @@
 [
     {
-        "name": "PoissonExemple",
-        "dmg": 20,
-        "effects": "No",
-        "lootprob": 0.8
-    },
-    {
         "name": "Poisson sanguin",
         "dmg": 80,
         "effects": "Sustain",

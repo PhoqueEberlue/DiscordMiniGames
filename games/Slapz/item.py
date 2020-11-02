@@ -28,4 +28,5 @@ class Item:
         self._dmg = dmg
 
     def __repr__(self) -> str:
-        return f'{self._name}, {self._dmg}, {self._effect} |'
+        return f'{self._name}, {self._dmg}, {self._effect}'
+
