@@ -12,6 +12,10 @@ _$**setLanguage** + [fr/en]: change the language setting of the guild_
 
 _$**setTiming** + number: change the minimum timing of the bomb_
 
+_$**createChannel** + number: creates {number} find word channel_
+
+_$**deleteChannel** + number: deletes {number} find word channel_
+
 _$**findword**: create a party message_
 
 _$**playfindword**: launch the game_
