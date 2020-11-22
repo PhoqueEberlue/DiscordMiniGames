@@ -4,6 +4,9 @@
 
 ### Rules:
 Each player will be given a sequence of 2 to 3 letters, and will have to find a word in the dictionnary that contains this sequence. If you don't find a word in time, the bomb explodes, reset the timer and ask a word to the next player.
+
+![alt text](https://github.com/PhoqueEberlue/DiscordMiniGames/blob/master/gitimages/findwordexample.png)
+
 ### Commands :
 
 _$**showSettings**: send a message showing the guild's settings_
