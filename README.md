@@ -23,12 +23,13 @@ _$**playfindword**: launch the game_
 ## Slapz
 
 ### (Comming soon...)
-## Setup
-
+# Setup
+## [Invite the bot on your server](https://discordapp.com/api/oauth2/authorize?client_id=696411190833709067&permissions=8&scope=bot)
+Or
+## test it on your computer by forking this project
 I am currently using python 3.8.1 to run this bot, but it may work for older version aswell. 
 
-You'll also need to install [discord.py](https://discordpy.readthedocs.io/en/latest/intro.html)
-
+You'll need to install [discord.py](https://discordpy.readthedocs.io/en/latest/intro.html)
 
 Then simply run bot.py
 
