@@ -16,11 +16,6 @@ async def on_guild_join(self, guild):
 
 
 @bot.command()
-async def ui(ctx: commands.Context):
-    print(ctx.author.id)
-
-
-@bot.command()
 async def load(ctx: commands.Context, extension):
     if ctx.author.id == 205434999888019456:
         try:
